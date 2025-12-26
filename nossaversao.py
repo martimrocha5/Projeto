@@ -25,12 +25,15 @@ def simula():
     
     medicos = [[f"m{i}", False, None, 0.0, 0.0] for i in range(NUM_MEDICOS)]
     
-    chegadas = {} 
+    chegadas_d = {}
+    ent_consulta_d = {}
+    saida_d = {}
+
     tempo_atual = tempo_atual + mani.gera_intervalo_tempo_chegada(TAXA_CHEGADA)
     while tempo_atual < TEMPO_SIMULACAO:
         doente_id = "d" + str(contadorDoentes)
         contadorDoentes += 1
-        chegadas[doente_id] = tempo_atual
+        chegadas_d[doente_id] = tempo_atual
         chegadas_saidas = mani.enqueue(chegadas_saidas, (tempo_atual, CHEGADA, doente_id))
         tempo_atual = tempo_atual + mani.gera_intervalo_tempo_chegada(TAXA_CHEGADA)
     
@@ -46,6 +49,7 @@ def simula():
             if medico_livre:
                 medico_livre = mani.mOcupa(medico_livre) 
                 medico_livre = mani.mInicioConsulta(medico_livre, tempo_atual)
+                ent_consulta_d[mani.e_doente(evento)]=tempo_atual
                 tempo_consulta = mani.gera_tempo_consulta()
                 medico_livre = mani.mDoenteCorrente(medico_livre, mani.e_doente(evento)) 
                 chegadas_saidas = mani.enqueue(chegadas_saidas, (tempo_atual + tempo_consulta, SAIDA, mani.e_doente(evento)))
@@ -64,7 +68,7 @@ def simula():
                     medicos[i] = mani.mTempoOcupado(medicos[i], mani.m_total_tempo_ocupado(medicos[i]) + tempo_atual - mani.m_inicio_ultima_consulta(medicos[i])) 
                     encontrado = True
                 i = i + 1
-            
+            saida_d[mani.e_doente(evento)]=tempo_atual
             medico = medicos[i-1]
 
             if fila_espera != []: # se há doentes à espera vou ocupar o médico que ficou livre...
@@ -72,6 +76,7 @@ def simula():
                 prox_doente, tchegada = ev
                 medico = mani.mOcupa(medico)
                 medico = mani.mInicioConsulta(medico, tempo_atual)
+                ent_consulta_d[prox_doente]=tempo_atual
                 medico = mani.mDoenteCorrente(medico, prox_doente)
                 tempo_consulta = mani.gera_tempo_consulta()
                 chegadas_saidas = mani.enqueue(chegadas_saidas, (tempo_atual + tempo_consulta, SAIDA, prox_doente))
