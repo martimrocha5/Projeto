@@ -3,7 +3,6 @@ import random
 import numpy as np
 import matplotlib as mlt
 import manipulacao1 as mani
-import PySimpleGUI as sg
 
 
 # Parâmetros da aplicação
