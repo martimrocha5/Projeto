@@ -1,4 +1,7 @@
 import FreeSimpleGUI as sg
+import matplotlib
+matplotlib.use('TkAgg')
+
 import matplotlib.pyplot as plt
 import numpy as np
 import principal as pr
