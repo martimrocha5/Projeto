@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import FreeSimpleGUI as sg
 import matplotlib.pyplot as plt
 
 def criar_interface():

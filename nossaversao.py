@@ -71,21 +71,21 @@ def simula():
                 tempos_consulta.append(t_cons)
                 chegadas_saidas = mani.enqueue(chegadas_saidas, (tempo_atual + t_cons, SAIDA, id_doente))
             else:
-                fila_espera.append((id_doente, tempo_atual)) # Entra na queue [cite: 29]
+                fila_espera.append((id_doente, tempo_atual)) # Entra na queue 
         
         elif mani.e_tipo(evento) == SAIDA:
             doentes_atendidos += 1
             
             # --- REGISTO DA SAÍDA ---
-            saida_d[id_doente] = tempo_atual [cite: 33]
-            # Cálculo: Tempo na Clínica = Momento da Saída - Momento da Chegada [cite: 47]
+            saida_d[id_doente] = tempo_atual
+            # Cálculo: Tempo na Clínica = Momento da Saída - Momento da Chegada 
             tempos_na_clinica.append(saida_d[id_doente] - chegadas_d[id_doente])
             
             # Libertar médico e processar fila
             medico = None
             for m in medicos:
                 if mani.m_doente_corrente(m) == id_doente:
-                    m = mani.mOcupa(m) # Fica livre [cite: 129]
+                    m = mani.mOcupa(m) # Fica livre 
                     m = mani.mDoenteCorrente(m, None)
                     m = mani.mTempoOcupado(m, mani.m_total_tempo_ocupado(m) + (tempo_atual - mani.m_inicio_ultima_consulta(m)))
                     medico = m
@@ -114,4 +114,13 @@ def simula():
         "hist_ocupa": historico_ocupacao
     }
     
+    print(f"Doentes atendidos: {doentes_atendidos}")
+    print(chegadas_d)
+    print(ent_consulta_d)
+    print(saida_d)
+
     return stats
+
+
+if __name__ == "__main__":
+    simula()
