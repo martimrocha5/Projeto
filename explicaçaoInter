@@ -34,7 +34,7 @@ def gerar_graficos(hist_fila, hist_ocupa):
     # ---------- ANÁLISE DA FILA (Linha 1) ----------
     tempos_f, valores_f = zip(*hist_fila)
 
-    # 1.1 Evolução Temporal [cite: 51]
+    # 1.1 Evolução Temporal 
     axs[0, 0].step(tempos_f, valores_f, where="post", color='#3498db', linewidth=2)
     axs[0, 0].set_title("Evolução da Fila", fontsize=14)
     axs[0, 0].set_ylabel("Nº de Doentes")
@@ -43,7 +43,7 @@ def gerar_graficos(hist_fila, hist_ocupa):
     axs[0, 1].bar(tempos_f, valores_f, width=1.5, color='#3498db', alpha=0.5)
     axs[0, 1].set_title("Picos de Espera", fontsize=14)
 
-    # 1.3 Percentagem de Tempo por Tamanho de Fila [cite: 42]
+    # 1.3 Percentagem de Tempo por Tamanho de Fila 
     dist_fila = {}
     for i in range(len(tempos_f) - 1):
         dt = tempos_f[i+1] - tempos_f[i]
@@ -60,7 +60,7 @@ def gerar_graficos(hist_fila, hist_ocupa):
     if len(hist_ocupa) > 1:
         tempos_o, valores_o = zip(*hist_ocupa)
 
-        # 2.1 Taxa de Ocupação ao longo do tempo [cite: 43, 52]
+        # 2.1 Taxa de Ocupação ao longo do tempo 
         axs[1, 0].plot(tempos_o, valores_o, color='#e74c3c', linewidth=2)
         axs[1, 0].fill_between(tempos_o, valores_o, color='#e74c3c', alpha=0.2)
         axs[1, 0].set_title("Taxa de Ocupação Médica", fontsize=14)
@@ -71,7 +71,7 @@ def gerar_graficos(hist_fila, hist_ocupa):
         axs[1, 1].bar(tempos_o, valores_o, width=1.5, color='#e74c3c', alpha=0.5)
         axs[1, 1].set_title("Instantes de Carga", fontsize=14)
 
-        # 2.3 Percentagem de Tempo por Nível de Ocupação [cite: 48]
+        # 2.3 Percentagem de Tempo por Nível de Ocupação
         dist_ocupa = {}
         for i in range(len(tempos_o) - 1):
             dt = tempos_o[i+1] - tempos_o[i]
@@ -92,7 +92,7 @@ def gerar_graficos(hist_fila, hist_ocupa):
 # 3. INTERFACE GRÁFICA AMPLIADA
 # ==========================================================
 def criar_interface():
-    sg.theme("LightBlue2") # Cor azul pedida [cite: 56]
+    sg.theme("LightBlue2") # Cor azul pedida 
     
     # Fontes maiores para melhor visibilidade
     fonte_principal = ("Helvetica", 15)
@@ -103,14 +103,13 @@ def criar_interface():
 
         [sg.Frame("Configurações da Simulação", [
             [sg.Text("Número de Médicos:", font=fonte_principal), sg.Push(), 
-             sg.Input("3", key="-MEDICOS-", size=(10, 1), font=fonte_principal)], # num_doctors [cite: 36]
+             sg.Input("3", key="-MEDICOS-", size=(10, 1), font=fonte_principal)], # num_doctors
             
             [sg.Text("Taxa de Chegada (doentes/h):", font=fonte_principal), sg.Push(), 
-             sg.Input("10", key="-TAXA-", size=(10, 1), font=fonte_principal)], # lambda_rate [cite: 36]
+             sg.Input("10", key="-TAXA-", size=(10, 1), font=fonte_principal)], # lambda_rate 
             
             [sg.Text("Tempo Médio Consulta (min):", font=fonte_principal), sg.Push(), 
-             sg.Input("15", key="-TEMPO-", size=(10, 1), font=fonte_principal)], # mean_service_time [cite: 36]
-            
+             sg.Input("15", key="-TEMPO-", size=(10, 1), font=fonte_principal)], # mean_service_time 
             [sg.Text("Duração Simulação (min):", font=fonte_principal), sg.Push(), 
              sg.Input("480", key="-DURACAO-", size=(10, 1), font=fonte_principal)], # simulation_time [cite: 36]
             
@@ -161,7 +160,7 @@ def criar_interface():
 
                 window["-OUTPUT-"].update(output)
                 
-                # Gera a Dashboard de gráficos [cite: 15, 59]
+                # Gera a Dashboard de gráficos 
                 gerar_graficos(res["hist_fila"], res["hist_ocupa"])
                 
             except Exception as e:
