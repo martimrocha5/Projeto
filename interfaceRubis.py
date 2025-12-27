@@ -2,6 +2,7 @@
 # IMPORTS
 # =========================
 import FreeSimpleGUI as sg
+
 import matplotlib
 matplotlib.use('TkAgg')
 
