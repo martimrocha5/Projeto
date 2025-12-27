@@ -27,6 +27,9 @@ def simula():
     chegadas_d = {}
     ent_consulta_d = {}
     saida_d = {}
+
+    tamanho_fila=[]
+    tempo_atual_fila=[]
    
     tempo_atual = tempo_atual + mani.gera_intervalo_tempo_chegada(TAXA_CHEGADA)
     while tempo_atual < TEMPO_SIMULACAO:
@@ -40,7 +43,6 @@ def simula():
 
     while queueEventos != []:
         evento, queueEventos = mani.dequeue(queueEventos)
-
         tempo_atual = mani.e_tempo(evento)
 
         if mani.e_tipo(evento) == CHEGADA:
@@ -55,7 +57,9 @@ def simula():
                
             else:
                 queue.append((evento[2], tempo_atual))
-                print(f"Fila de Espera({len(queue)}): ", queue)
+                
+                tamanho_fila.append(len(queue))
+                tempo_atual_fila.append(tempo_atual)
         elif evento[1] == SAIDA:
             doentes_atendidos += 1
            
@@ -73,6 +77,8 @@ def simula():
 
             if queue != []:
                 ev, queue = mani.dequeue(queue)
+                tamanho_fila.append(len(queue))
+                tempo_atual_fila.append(tempo_atual)
                 prox_doente, tchegada = ev
                 medico = mani.mOcupa(medico)
                 medico = mani.mInicioConsulta(medico, tempo_atual)
@@ -82,9 +88,36 @@ def simula():
                 queueEventos = mani.enqueue(queueEventos, (tempo_atual + tempo_consulta, SAIDA, prox_doente))
 
     print(f"Doentes atendidos: {doentes_atendidos}")
-    print(chegadas_d)
-    print(ent_consulta_d)
-    print(saida_d)
+    
+    tempos_espera = []
+    tempos_totais = []
+    soma_espera=0
+    media_espera=0
+    soma_total=0
+    media_total=0
+
+    for doente in chegadas_d:
+        if doente in ent_consulta_d and doente in saida_d:
+            tempo_espera = ent_consulta_d[doente] - chegadas_d[doente]
+            tempo_total = saida_d[doente] - chegadas_d[doente]
+
+            tempos_espera.append(tempo_espera)
+            tempos_totais.append(tempo_total)
+    
+
+    for t1 in tempos_espera:
+        soma_espera+=t1
+    media_espera=soma_espera/len(tempos_espera)
+
+    for t2 in tempos_totais:
+        soma_total+=t2
+    media_total=soma_total/len(tempos_totais)
+
+    max_espera=max(tempos_espera)
+    max_total=max(tempos_totais)
+
+    print(tamanho_fila)
+    print(tempo_atual_fila)
 
 if __name__ == "__main__":
     simula()
