@@ -1,134 +1,137 @@
+import json
+import numpy as np
 import manipulacao1 as mani
 
 # Constantes para legibilidade
 CHEGADA = "chegada"
 SAIDA = "saída"
 
+# ===============================
+# CARREGAR DATASET 
+# ===============================
+
+with open("pessoas.json", encoding="utf-8") as f:
+    PESSOAS = json.load(f)
+
 def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
-    # 1. ATUALIZAR O MÓDULO DE MANIPULAÇÃO COM OS DADOS DA GUI
-    # Isto garante que as funções gera_tempo_consulta usem os valores que escolheste
+    # 1. ATUALIZAR PARÂMETROS NO MOTOR
     mani.NUM_MEDICOS = n_medicos
-    mani.TAXA_CHEGADA = taxa_chegada / 60  # converter para doentes/min
+    mani.TAXA_CHEGADA = taxa_chegada / 60  
     mani.TEMPO_MEDIO_CONSULTA = tempo_medio
     mani.TEMPO_SIMULACAO = tempo_simulacao
     mani.DISTRIBUICAO_TEMPO_CONSULTA = distribuicao
     
-    # Inicialização
     tempo_atual = 0.0
-    contadorDoentes = 1
     queueEventos = []
-    queue = [] # Fila de espera (FIFO)
-   
-    # Criar médicos: [id, ocupado, doente_atual, tempo_ocupado, inicio_ult_consulta]
-    medicos = [[f"m{i}", False, None, 0.0, 0.0] for i in range(mani.NUM_MEDICOS)]
-   
-    # Estruturas para estatísticas
+    fila_espera = [] 
+
+    medicos = [[f"m{i}", False, None, 0.0, 0.0] for i in range(n_medicos)]
+
     chegadas_d = {}
     ent_consulta_d = {}
     saida_d = {}
-
-    tamanho_fila = []     # Para o gráfico 1
-    tempo_atual_fila = [] # Para o gráfico 1
     
-    hist_ocupa = []       # Para o gráfico 2 (Novo!)
-   
-    # Gerar chegadas iniciais
-    tempo_atual = mani.gera_intervalo_tempo_chegada(mani.TAXA_CHEGADA)
-    while tempo_atual < mani.TEMPO_SIMULACAO:
-        doente_id = "d" + str(contadorDoentes)
-        contadorDoentes += 1
-        chegadas_d[doente_id] = tempo_atual
-        queueEventos = mani.enqueue(queueEventos, (tempo_atual, CHEGADA, doente_id))
-        tempo_atual += mani.gera_intervalo_tempo_chegada(mani.TAXA_CHEGADA)
-   
+    tamanho_fila_hist = []     
+    tempo_fila_hist = [] 
+    hist_ocupa = []
+
+    indice_pessoa = 0
+    t_chegada_aux = mani.gera_intervalo_tempo_chegada(mani.TAXA_CHEGADA)
+    
+    # --- GERAÇÃO DE CHEGADAS ---
+    while t_chegada_aux < tempo_simulacao:
+        
+        pessoa = PESSOAS[indice_pessoa % len(PESSOAS)]
+        id_unico = f"{pessoa['id']}_{indice_pessoa}" 
+        
+        chegadas_d[id_unico] = t_chegada_aux
+
+        queueEventos = mani.enqueue(queueEventos, (t_chegada_aux, CHEGADA, (id_unico, pessoa)))
+        
+        t_chegada_aux += mani.gera_intervalo_tempo_chegada(mani.TAXA_CHEGADA)
+        indice_pessoa += 1
+
     doentes_atendidos = 0
+    print(f"\n--- INÍCIO DA SIMULAÇÃO ({tempo_simulacao} min) ---")
 
-    # CICLO DE SIMULAÇÃO
-    while queueEventos != []:
+    while queueEventos:
         evento, queueEventos = mani.dequeue(queueEventos)
-        tempo_atual = mani.e_tempo(evento)
+        tempo_atual = evento[0]
+        id_unico, dados_doente = evento[2]
 
-        # Recolha de dados para o Gráfico de Ocupação
-        ocupados = sum(1 for m in medicos if mani.m_ocupado(m))
-        perc_ocupacao = (ocupados / n_medicos) * 100
-        hist_ocupa.append((tempo_atual, perc_ocupacao))
+        ocupados = sum(1 for m in medicos if m[1])
+        hist_ocupa.append((tempo_atual, (ocupados / n_medicos) * 100))
 
-        # Processar CHEGADA
-        if mani.e_tipo(evento) == CHEGADA:
-            medico_livre = mani.procuraMedico(medicos)
+        if evento[1] == CHEGADA:
+            print(f"\n{round(tempo_atual, 2)} min | Chegada: {dados_doente['nome']} ({dados_doente['idade']} anos)")
+            medico = mani.procuraMedico(medicos)
             
-            if medico_livre:
-                # O médico estava livre, atende já
-                medico_livre = mani.mOcupa(medico_livre)
-                medico_livre = mani.mInicioConsulta(medico_livre, tempo_atual)
-                ent_consulta_d[mani.e_doente(evento)] = tempo_atual
+            if medico:
+                print(f"   ✔ Médico {medico[0]} livre -> Atendimento imediato")
+                medico[1] = True 
+                medico[2] = id_unico
+                medico[4] = tempo_atual
+                ent_consulta_d[id_unico] = tempo_atual
                 
-                tempo_consulta = mani.gera_tempo_consulta()
-                medico_livre = mani.mDoenteCorrente(medico_livre, mani.e_doente(evento))
+                t_cons = mani.gera_tempo_consulta(dados_doente)
+                print(f"Consulta prevista: {round(t_cons, 2)} min")
                 
-                queueEventos = mani.enqueue(queueEventos, (tempo_atual + tempo_consulta, SAIDA, mani.e_doente(evento)))
+                queueEventos = mani.enqueue(queueEventos, (tempo_atual + t_cons, SAIDA, (id_unico, dados_doente)))
             else:
-                # Médicos ocupados, vai para a fila
-                queue.append((mani.e_doente(evento), tempo_atual))
-                tamanho_fila.append(len(queue))
-                tempo_atual_fila.append(tempo_atual)
+                fila_espera.append((id_unico, dados_doente, tempo_atual))
+                print(f"Todos ocupados -> {dados_doente['nome']} entrou na fila (Tamanho: {len(fila_espera)})")
+                tamanho_fila_hist.append(len(fila_espera))
+                tempo_fila_hist.append(tempo_atual)
 
-        # Processar SAÍDA
-        elif mani.e_tipo(evento) == SAIDA:
+        elif evento[1] == SAIDA:
+            print(f"\n{round(tempo_atual, 2)} min | Fim de consulta: {dados_doente['nome']}")
             doentes_atendidos += 1
+            saida_d[id_unico] = tempo_atual
             
-            # Libertar o médico que estava com este doente
-            i = 0
-            encontrado = False
             medico_idx = -1
-            while i < len(medicos) and not encontrado:
-                if mani.m_doente_corrente(medicos[i]) == mani.e_doente(evento):
-                    medicos[i] = mani.mOcupa(medicos[i]) # Desocupa
-                    medicos[i] = mani.mDoenteCorrente(medicos[i], None)  
-                    # Contabilizar tempo de trabalho
-                    duracao = tempo_atual - mani.m_inicio_ultima_consulta(medicos[i])
-                    medicos[i] = mani.mTempoOcupado(medicos[i], mani.m_total_tempo_ocupado(medicos[i]) + duracao)
+            
+            for i, m in enumerate(medicos):
+                if m[2] == id_unico:
+                    m[1] = False
+                    duracao = tempo_atual - m[4]
+                    m[3] += duracao 
+                    m[2] = None
                     medico_idx = i
-                    encontrado = True
-                i += 1
-            
-            saida_d[mani.e_doente(evento)] = tempo_atual
-            
-            # Se houver alguém na fila, o médico atende logo o próximo
-            if queue:
-                prox_doente, t_chegada_fila = queue.pop(0) # FIFO
-                
-                # Registar fila (diminuiu)
-                tamanho_fila.append(len(queue))
-                tempo_atual_fila.append(tempo_atual)
-                
-                medico = medicos[medico_idx]
-                medico = mani.mOcupa(medico)
-                medico = mani.mInicioConsulta(medico, tempo_atual)
-                ent_consulta_d[prox_doente] = tempo_atual
-                medico = mani.mDoenteCorrente(medico, prox_doente)
-                
-                tempo_consulta = mani.gera_tempo_consulta()
-                queueEventos = mani.enqueue(queueEventos, (tempo_atual + tempo_consulta, SAIDA, prox_doente))
+                    
 
-    # --- CÁLCULO DE ESTATÍSTICAS FINAIS ---
-    tempos_espera = []
-    tempos_totais = []
+            if fila_espera:
+                p_id, p_dados, t_chegada_f = fila_espera.pop(0)
+                print(f"Saiu da fila: {p_dados['nome']} (esperou {round(tempo_atual - t_chegada_f, 2)} min)")
+                
+                tamanho_fila_hist.append(len(fila_espera))
+                tempo_fila_hist.append(tempo_atual)
+                
+                m = medicos[medico_idx]
+                m[1] = True
+                m[2] = p_id
+                m[4] = tempo_atual
+                ent_consulta_d[p_id] = tempo_atual
+                
+                t_cons = mani.gera_tempo_consulta(p_dados)
+                print(f"Consulta prevista: {round(t_cons, 2)} min")
+                queueEventos = mani.enqueue(queueEventos, (tempo_atual + t_cons, SAIDA, (p_id, p_dados)))
 
-    for doente in chegadas_d:
-        if doente in ent_consulta_d and doente in saida_d:
-            tempo_espera = ent_consulta_d[doente] - chegadas_d[doente]
-            tempo_total = saida_d[doente] - chegadas_d[doente]
-            tempos_espera.append(tempo_espera)
-            tempos_totais.append(tempo_total)
-    
-    media_espera = sum(tempos_espera)/len(tempos_espera) if tempos_espera else 0
-    media_total = sum(tempos_totais)/len(tempos_totais) if tempos_totais else 0
+    # --- ESTATÍSTICAS FINAIS ---
+    esperas = [ent_consulta_d[d] - chegadas_d[d] for d in saida_d if d in ent_consulta_d]
+    totais = [saida_d[d] - chegadas_d[d] for d in saida_d]
+
+    print(f"\n{'='*40}\n   SIMULAÇÃO TERMINADA\n{'='*40}")
+    print(f"Doentes Atendidos: {doentes_atendidos}")
+    print(f"Média de Espera: {round(np.mean(esperas), 2) if esperas else 0} min")
+    print(f"Média na Clínica: {round(np.mean(totais), 2) if totais else 0} min")
 
     return {
         "total_atendidos": doentes_atendidos,
-        "media_espera": media_espera,
-        "media_clinica": media_total,
-        "hist_fila": list(zip(tempo_atual_fila, tamanho_fila)),
-        "hist_ocupa": hist_ocupa # Agora já tem dados!
+        "media_espera": np.mean(esperas) if esperas else 0,
+        "media_clinica": np.mean(totais) if totais else 0,
+        "hist_fila": list(zip(tempo_fila_hist, tamanho_fila_hist)),
+        "hist_ocupa": hist_ocupa
     }
+
+if __name__ == "__main__":
+    simula(3, 10, 15, 480, "exponential")

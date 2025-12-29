@@ -2,123 +2,111 @@
 # IMPORTS
 # =========================
 import FreeSimpleGUI as sg
-
 import matplotlib
-matplotlib.use('TkAgg')
-
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
-import numpy as np
-import principal as pr
+import principalRUBIS as pr
 
 plt.style.use("ggplot")
 
 # =========================
-# FUNÇÕES AUXILIARES
+# FUNÇÕES DE DESENHO
 # =========================
-def filter_autopct(pct):
-    if pct > 4:
-        return f"{pct:.1f}%"
-    return ""
 
-# =========================
-# GRÁFICOS
-# =========================
-def gerar_graficos(hist_fila, hist_ocupa):
+def plot_fila_tempo(hist_fila):
+    tempos, valores = zip(*hist_fila)
+    plt.figure("Evolução da Fila", figsize=(8, 5))
+    plt.step(tempos, valores, where="post")
+    plt.title("Tamanho da Fila ao Longo do Tempo")
+    plt.xlabel("Tempo (min)")
+    plt.ylabel("Número de Doentes")
+    plt.show()
 
-    if len(hist_fila) < 2:
-        return
+def plot_ocupacao_tempo(hist_ocupa):
+    tempos, valores = zip(*hist_ocupa)
+    plt.figure("Taxa de Ocupação", figsize=(8, 5))
+    plt.plot(tempos, valores)
+    plt.fill_between(tempos, valores, alpha=0.3)
+    plt.title("Evolução da Taxa de Ocupação")
+    plt.ylabel("Percentagem")
+    plt.ylim(0, 105)
+    plt.show()
 
-    fig, axs = plt.subplots(2, 3, figsize=(16, 9))
-    fig.suptitle("Dashboard de Simulação - Clínica Médica", fontsize=16)
+def plot_distribuicao_tempo(hist_fila):
+    tempos, valores = zip(*hist_fila)
+    dist = {}
 
-    # ---------- FILA ----------
-    tempos_f, valores_f = zip(*hist_fila)
+    for i in range(len(tempos) - 1):
+        dt = tempos[i + 1] - tempos[i]
+        val = valores[i]
+        dist[val] = dist.get(val, 0) + dt
 
-    axs[0, 0].step(tempos_f, valores_f, where="post")
-    axs[0, 0].set_title("Evolução da Fila")
-    axs[0, 0].set_ylabel("Pessoas")
-
-    axs[0, 1].bar(tempos_f, valores_f, width=1)
-    axs[0, 1].set_title("Eventos da Fila")
-
-    dist_fila = {}
-    for i in range(len(tempos_f) - 1):
-        dt = tempos_f[i+1] - tempos_f[i]
-        val = valores_f[i]
-        dist_fila[val] = dist_fila.get(val, 0) + dt
-
-    labels_f = [f"{k} pessoas" for k in dist_fila.keys()]
-    sizes_f = list(dist_fila.values())
-
-    wedges, _, _ = axs[0, 2].pie(
-        sizes_f,
-        autopct=filter_autopct,
-        startangle=90
-    )
-    axs[0, 2].set_title("% Tempo por tamanho da fila")
-    axs[0, 2].legend(wedges, labels_f)
-
-    # ---------- OCUPAÇÃO ----------
-    if len(hist_ocupa) > 1:
-        tempos_o, valores_o = zip(*hist_ocupa)
-
-        axs[1, 0].plot(tempos_o, valores_o)
-        axs[1, 0].set_title("Taxa de Ocupação")
-        axs[1, 0].set_ylabel("%")
-        axs[1, 0].set_ylim(0, 100)
-
-        axs[1, 1].bar(tempos_o, valores_o, width=1)
-        axs[1, 1].set_title("Eventos de Ocupação")
-
-        dist_ocupa = {}
-        for i in range(len(tempos_o) - 1):
-            dt = tempos_o[i+1] - tempos_o[i]
-            val = round(valores_o[i], 1)
-            dist_ocupa[val] = dist_ocupa.get(val, 0) + dt
-
-        labels_o = [f"{k}%" for k in dist_ocupa.keys()]
-        sizes_o = list(dist_ocupa.values())
-
-        wedges2, _, _ = axs[1, 2].pie(
-            sizes_o,
-            autopct=filter_autopct,
-            startangle=90
-        )
-        axs[1, 2].set_title("% Tempo por ocupação")
-        axs[1, 2].legend(wedges2, labels_o)
-
-    plt.tight_layout()
+    plt.figure("Distribuição de Tempo", figsize=(7, 7))
+    plt.pie(dist.values(), labels=[f"{k} doentes" for k in dist.keys()], autopct="%1.1f%%")
+    plt.title("Tempo Total em Cada Estado da Fila")
     plt.show()
 
 # =========================
-# INTERFACE
+# MENU DE GRÁFICOS
 # =========================
-def criar_interface():
 
+def menu_graficos(res):
+    layout = [
+        [sg.Text("Escolha a Visualização:")],
+        [sg.Button("Evolução da Fila")],
+        [sg.Button("Taxa de Ocupação")],
+        [sg.Button("Distribuição de Tempo")],
+        [sg.Button("Fechar")]
+    ]
+
+    win = sg.Window("Menu de Gráficos", layout, modal=True)
+
+    ativo = True
+    while ativo:
+        event, _ = win.read()
+
+        if event in (sg.WIN_CLOSED, "Fechar"):
+            ativo = False
+
+        elif event == "Evolução da Fila":
+            plot_fila_tempo(res["hist_fila"])
+
+        elif event == "Taxa de Ocupação":
+            plot_ocupacao_tempo(res["hist_ocupa"])
+
+        elif event == "Distribuição de Tempo":
+            plot_distribuicao_tempo(res["hist_fila"])
+
+    win.close()
+
+# =========================
+# INTERFACE PRINCIPAL
+# =========================
+
+def criar_interface():
     sg.theme("LightBlue2")
 
     layout = [
-        [sg.Text("🏥 Simulação de Clínica Médica", font=("Helvetica", 18, "bold"))],
+        [sg.Text("Simulação de Clínica Médica", font=("Helvetica", 16, "bold"))],
 
-        [sg.Frame("Parâmetros", [
-            [sg.Text("Número de Médicos:"), sg.Input("3", key="-MEDICOS-")],
-            [sg.Text("Taxa de Chegada (doentes/h):"), sg.Input("10", key="-TAXA-")],
-            [sg.Text("Tempo Médio Consulta (min):"), sg.Input("15", key="-TEMPO-")],
-            [sg.Text("Duração Simulação (min):"), sg.Input("480", key="-DURACAO-")],
-            [sg.Text("Distribuição:"),
-             sg.Combo(["exponential", "normal", "uniform"],
-                      default_value="exponential",
-                      key="-DIST-")]
+        [sg.Frame("Configurações", [
+            [sg.Text("Médicos:"), sg.Input("3", key="-MEDICOS-", size=(10,))],
+            [sg.Text("Taxa (doentes/h):"), sg.Input("10", key="-TAXA-", size=(10,))],
+            [sg.Text("Tempo Consulta (min):"), sg.Input("15", key="-TEMPO-", size=(10,))],
+            [sg.Text("Duração (min):"), sg.Input("480", key="-DURACAO-", size=(10,))],
+            [sg.Combo(["exponential", "normal", "uniform"],
+                      default_value="exponential", key="-DIST-")]
         ])],
 
         [sg.Button("Executar Simulação"), sg.Button("Sair")],
-        [sg.HorizontalSeparator()],
         [sg.Text("Resultados:")],
-        [sg.Multiline(size=(50, 6), key="-OUTPUT-", disabled=True)]
+        [sg.Multiline(size=(45, 5), key="-OUTPUT-", disabled=True)],
+        [sg.Button("Abrir Menu de Gráficos", key="-GRAF-", visible=False)]
     ]
 
-    window = sg.Window("Clínica Médica", layout)
+    window = sg.Window("Simulador", layout)
 
+    dados = None
     running = True
 
     while running:
@@ -128,8 +116,7 @@ def criar_interface():
             running = False
 
         elif event == "Executar Simulação":
-
-            res = pr.simula(
+            dados = pr.simula(
                 n_medicos=int(values["-MEDICOS-"]),
                 taxa_chegada=float(values["-TAXA-"]),
                 tempo_medio=float(values["-TEMPO-"]),
@@ -137,23 +124,24 @@ def criar_interface():
                 distribuicao=values["-DIST-"]
             )
 
-            output = (
-                "📊 RESULTADOS\n"
-                "-------------------------\n"
-                f"Doentes atendidos: {res['total_atendidos']}\n"
-                f"Tempo médio espera: {res['media_espera']:.2f} min\n"
-                f"Tempo médio clínica: {res['media_clinica']:.2f} min"
+            texto = (
+                f"Atendidos: {dados['total_atendidos']}\n"
+                f"Espera média: {dados['media_espera']:.2f} min\n"
+                f"Tempo total médio: {dados['media_clinica']:.2f} min"
             )
 
-            window["-OUTPUT-"].update(output)
-            gerar_graficos(res["hist_fila"], res["hist_ocupa"])
+            window["-OUTPUT-"].update(texto)
+            window["-GRAF-"].update(visible=True)
+
+        elif event == "-GRAF-":
+            if dados is not None:
+                menu_graficos(dados)
 
     window.close()
-
-
 
 # =========================
 # PONTO DE ENTRADA
 # =========================
+
 if __name__ == "__main__":
     criar_interface()
