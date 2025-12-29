@@ -5,7 +5,7 @@ import FreeSimpleGUI as sg
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
-import principalRUBIS as pr
+import principal as pr
 
 plt.style.use("ggplot")
 
