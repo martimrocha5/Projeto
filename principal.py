@@ -67,7 +67,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
             medico = mani.procuraMedico(medicos)
             
             if medico:
-                print(f"   ✔ Médico {medico[0]} livre -> Atendimento imediato")
+                print(f"Médico {medico[0]} livre -> Atendimento imediato")
                 medico[1] = True 
                 medico[2] = id_unico
                 medico[4] = tempo_atual
