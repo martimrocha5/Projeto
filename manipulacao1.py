@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import random
 
 # ===============================
 # PARÂMETROS DA SIMULAÇÃO
@@ -88,15 +89,28 @@ def gera_tempo_consulta(doente):
             TEMPO_MEDIO_CONSULTA * 0.5,
             TEMPO_MEDIO_CONSULTA * 1.5
         )
+    return tempo
 
 # ===============================
 # PROCURAR MÉDICO LIVRE
 # ===============================
-def procuraMedico(lista):
+def procuraMedico(lista, especialidade):
     for m in lista:
-        if not m[1]:
+        if not m[1] and m[5]==especialidade:
             return m
     return None
+
+def criarMedico(n_medicos,especialidades):
+    medicos=[]
+    for i in range(min(n_medicos, len(especialidades))):
+        medicos.append(
+            [f"m{i}", False, None, 0.0, 0.0, especialidades[i]]
+        )
+    for i in range(len(medicos), n_medicos):
+        medicos.append(
+            [f"m{i}", False, None, 0.0, 0.0, random.choice(especialidades)]
+        )
+    return medicos
 
 def atribuir_especialidade(pessoa):
     cond=''

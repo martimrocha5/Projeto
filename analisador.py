@@ -85,3 +85,4 @@ def distribuir_faixas_etarias(lista):
             else: 
                 res["71+"] += 1
     return res
+
