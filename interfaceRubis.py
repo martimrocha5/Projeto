@@ -79,6 +79,46 @@ def menu_graficos(res):
 
     win.close()
 
+def abrir_janela_analise():
+    dados = analise.carregar_e_validar("pessoas.json")
+    if not dados:
+        sg.popup_error("Erro: Ficheiro pessoas.json nao encontrado.")
+        return
+
+    # 1. Obter dados do analisador
+    idades = analise.estatisticas_idades(dados)
+    faixas = analise.distribuir_faixas_etarias(dados)
+    fumadores = analise.distribuicao_fumadores(dados)
+    desportos = analise.distribuicao_desportos(dados)
+    distritos = analise.distribuicao_distritos(dados)
+    profs = analise.top_profissoes(dados)
+
+    # 2. Formatar textos
+    txt_idade = f"Media: {idades['media']:.1f}\nMin: {idades['min']} | Max: {idades['max']}\n\nFaixas:\n"
+    for k, v in faixas.items(): txt_idade += f"- {k}: {v}\n"
+
+    txt_profs = "Top Profissoes:\n"
+    for k, v in profs: txt_profs += f"* {k}: {v}\n"
+
+    # 3. Layout da Janela
+    layout_analise = [
+        [sg.Text("Painel de Analise de Dados", font=("Arial", 14, "bold"))],
+        [sg.TabGroup([[
+            sg.Tab("Idades", [[sg.Multiline(txt_idade, size=(45, 12), disabled=True)]]),
+            sg.Tab("Fumadores", [[sg.Listbox([f"{k}: {v}" for k,v in fumadores.items()], size=(45, 12))]]),
+            sg.Tab("Desportos", [[sg.Listbox([f"{k}: {v}" for k,v in desportos.items()], size=(45, 12))]]),
+            sg.Tab("Distritos", [[sg.Listbox([f"{k}: {v}" for k,v in distritos.items()], size=(45, 12))]]),
+            sg.Tab("Profissoes", [[sg.Multiline(txt_profs, size=(45, 12), disabled=True)]])
+        ]])],
+        [sg.Button("Fechar")]
+    ]
+
+    win = sg.Window("Estatisticas", layout_analise, modal=True)
+    while True:
+        e, _ = win.read()
+        if e in (sg.WIN_CLOSED, "Fechar"): break
+    win.close()
+
 # =========================
 # INTERFACE PRINCIPAL
 # =========================
@@ -98,7 +138,9 @@ def criar_interface():
                       default_value="exponential", key="-DIST-")]
         ])],
 
-        [sg.Button("Executar Simulação"), sg.Button("Sair")],
+        [sg.Button("Executar Simulacao", button_color="green"), 
+         sg.Button("Analise de Dados", key="-BT-ANALISE-", button_color="blue"), 
+         sg.Button("Sair")],
         [sg.Text("Resultados:")],
         [sg.Multiline(size=(60, 10), key="-OUTPUT-", disabled=True)],
         [sg.Button("Abrir Menu de Gráficos", key="-GRAF-", visible=False)]
@@ -114,6 +156,9 @@ def criar_interface():
 
         if event in (sg.WIN_CLOSED, "Sair"):
             running = False
+       
+        if event == "-BT-ANALISE-":
+            abrir_janela_analise()
 
         elif event == "Executar Simulação":
             dados = pr.simula(
