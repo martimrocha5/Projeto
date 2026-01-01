@@ -100,7 +100,7 @@ def criar_interface():
 
         [sg.Button("Executar Simulação"), sg.Button("Sair")],
         [sg.Text("Resultados:")],
-        [sg.Multiline(size=(45, 5), key="-OUTPUT-", disabled=True)],
+        [sg.Multiline(size=(60, 10), key="-OUTPUT-", disabled=True)],
         [sg.Button("Abrir Menu de Gráficos", key="-GRAF-", visible=False)]
     ]
 
