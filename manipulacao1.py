@@ -101,9 +101,9 @@ def gera_tempo_consulta(doente):
 # ===============================
 # PROCURAR MÉDICO LIVRE
 # ===============================
-def procuraMedico(lista, especialidade):
+def procuraMedico(lista):
     for m in lista:
-        if not m[1] and m[5]==especialidade:
+        if not m[1]:
             return m
     return None
 

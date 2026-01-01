@@ -44,7 +44,7 @@ def distribuicao_fumadores(lista):
     for p in lista:
         # Acede à sub-chave conforme a estrutura do teu JSON
         if "atributos" in p:
-            if p["atributos"].get("fumador") == True:
+            if p["atributos"]["fumador"]:
                 res["Fumador"] += 1
             else:
                 res["Não Fumador"] += 1
@@ -54,8 +54,8 @@ def distribuicao_desportos(lista):
     """Frequência de itens numa lista dentro de 'atributos'."""
     res = {}
     for p in lista:
-        if "atributos" in p and "desportos" in p["atributos"]:
-            para_contar = p["atributos"]["desportos"]
+        if "desportos" in p:
+            para_contar = p["desportos"]
             for item in para_contar:
                 res[item] = res.get(item, 0) + 1
     return res
