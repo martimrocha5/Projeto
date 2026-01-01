@@ -6,6 +6,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import principal as pr
+import analisador as analise
 
 plt.style.use("ggplot")
 
@@ -79,6 +80,9 @@ def menu_graficos(res):
 
     win.close()
 
+# =========================
+# JANELA DE ANÁLISE
+# =========================
 def abrir_janela_analise():
     dados = analise.carregar_e_validar("pessoas.json")
     if not dados:
@@ -93,14 +97,13 @@ def abrir_janela_analise():
     distritos = analise.distribuicao_distritos(dados)
     profs = analise.top_profissoes(dados)
 
-    # 2. Formatar textos
+    # 2. Formatar textos (Sem emojis como solicitado)
     txt_idade = f"Media: {idades['media']:.1f}\nMin: {idades['min']} | Max: {idades['max']}\n\nFaixas:\n"
     for k, v in faixas.items(): txt_idade += f"- {k}: {v}\n"
 
     txt_profs = "Top Profissoes:\n"
     for k, v in profs: txt_profs += f"* {k}: {v}\n"
 
-    # 3. Layout da Janela
     layout_analise = [
         [sg.Text("Painel de Analise de Dados", font=("Arial", 14, "bold"))],
         [sg.TabGroup([[
@@ -122,7 +125,6 @@ def abrir_janela_analise():
 # =========================
 # INTERFACE PRINCIPAL
 # =========================
-
 def criar_interface():
     sg.theme("LightBlue2")
 
@@ -138,7 +140,7 @@ def criar_interface():
                       default_value="exponential", key="-DIST-")]
         ])],
 
-        [sg.Button("Executar Simulacao", button_color="green"), 
+        [sg.Button("Executar Simulacao", button_color="green", key="-SIMULAR-"), # Adicionei uma KEY para segurança
          sg.Button("Analise de Dados", key="-BT-ANALISE-", button_color="blue"), 
          sg.Button("Sair")],
         [sg.Text("Resultados:")],
@@ -147,46 +149,43 @@ def criar_interface():
     ]
 
     window = sg.Window("Simulador", layout)
-
     dados = None
-    running = True
 
-    while running:
+    while True:
         event, values = window.read()
 
         if event in (sg.WIN_CLOSED, "Sair"):
-            running = False
+            break
        
         if event == "-BT-ANALISE-":
             abrir_janela_analise()
 
-        elif event == "Executar Simulação":
-            dados = pr.simula(
-                n_medicos=int(values["-MEDICOS-"]),
-                taxa_chegada=float(values["-TAXA-"]),
-                tempo_medio=float(values["-TEMPO-"]),
-                tempo_simulacao=float(values["-DURACAO-"]),
-                distribuicao=values["-DIST-"]
-            )
+        elif event == "-SIMULAR-": # Agora usa a KEY fixa, evitando erros de acento
+            try:
+                dados = pr.simula(
+                    n_medicos=int(values["-MEDICOS-"]),
+                    taxa_chegada=float(values["-TAXA-"]),
+                    tempo_medio=float(values["-TEMPO-"]),
+                    tempo_simulacao=float(values["-DURACAO-"]),
+                    distribuicao=values["-DIST-"]
+                )
 
-            texto = (
-                f"Atendidos: {dados['total_atendidos']}\n"
-                f"Espera média: {dados['media_espera']:.2f} min\n"
-                f"Tempo total médio: {dados['media_clinica']:.2f} min"
-            )
+                texto = (
+                    f"Atendidos: {dados['total_atendidos']}\n"
+                    f"Espera média: {dados['media_espera']:.2f} min\n"
+                    f"Tempo total médio: {dados['media_clinica']:.2f} min"
+                )
 
-            window["-OUTPUT-"].update(texto)
-            window["-GRAF-"].update(visible=True)
+                window["-OUTPUT-"].update(texto)
+                window["-GRAF-"].update(visible=True)
+            except Exception as e:
+                sg.popup_error(f"Erro nos parâmetros: {e}")
 
         elif event == "-GRAF-":
             if dados is not None:
                 menu_graficos(dados)
 
     window.close()
-
-# =========================
-# PONTO DE ENTRADA
-# =========================
 
 if __name__ == "__main__":
     criar_interface()
