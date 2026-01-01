@@ -12,7 +12,6 @@ def carregar_e_validar(caminho):
 
 def estatisticas_idades(lista):
     """Cálculo de média, mín e máx."""
-    if not lista: return {}
     soma, contagem = 0, 0
     min_idade, max_idade = 999, -1
     
@@ -75,9 +74,14 @@ def distribuir_faixas_etarias(lista):
     for p in lista:
         if "idade" in p:
             i = p["idade"]
-            if i < 18: res["0-17"] += 1
-            elif i < 31: res["18-30"] += 1
-            elif i < 51: res["31-50"] += 1
-            elif i < 71: res["51-70"] += 1
-            else: res["71+"] += 1
+            if i < 18: 
+                res["0-17"] += 1
+            elif i < 31: 
+                res["18-30"] += 1
+            elif i < 51: 
+                res["31-50"] += 1
+            elif i < 71: 
+                res["51-70"] += 1
+            else: 
+                res["71+"] += 1
     return res

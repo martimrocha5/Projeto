@@ -89,15 +89,6 @@ def gera_tempo_consulta(doente):
             TEMPO_MEDIO_CONSULTA * 1.5
         )
 
-    # ajuste por idade
-    idade = doente["idade"]
-    if idade < 18:
-        tempo *= 0.8
-    elif idade > 65:
-        tempo *= 1.3
-
-    return tempo
-
 # ===============================
 # PROCURAR MÉDICO LIVRE
 # ===============================

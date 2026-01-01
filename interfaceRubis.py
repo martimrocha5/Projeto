@@ -60,7 +60,7 @@ def menu_graficos(res):
         [sg.Button("Fechar")]
     ]
 
-    win = sg.Window("Menu de Gráficos", layout, modal=True)
+    win = sg.Window("Menu de Gráficos", layout, size=(350,230), modal=True)
 
     ativo = True
     while ativo:
