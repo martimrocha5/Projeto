@@ -101,8 +101,18 @@ def gera_tempo_consulta(doente):
 # ===============================
 # PROCURAR MÉDICO LIVRE
 # ===============================
-def procuraMedico(lista):
+def procuraMedico(lista, especialidade):
     for m in lista:
-        if not m[1]:
+        if not m[1] and m[5]==especialidade:
             return m
     return None
+
+def atribuir_especialidade(pessoa):
+    cond=''
+    if pessoa["atributos"]["fumador"]:
+        cond = "Pneumologia"
+    elif pessoa["idade"] > 65:
+        cond = "Cardiologia"
+    else:
+        cond = "Clínica Geral"
+    return cond

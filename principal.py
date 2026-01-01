@@ -13,6 +13,13 @@ SAIDA = "saída"
 with open("pessoas.json", encoding="utf-8") as f:
     PESSOAS = json.load(f)
 
+especialidades=["Cardiologia", "Clínica Geral", "Ortopedia", "Pneumologia"]
+
+
+
+
+
+
 def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
     # 1. ATUALIZAR PARÂMETROS NO MOTOR
     mani.NUM_MEDICOS = n_medicos
@@ -25,7 +32,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
     queueEventos = []
     fila_espera = [] 
 
-    medicos = [[f"m{i}", False, None, 0.0, 0.0] for i in range(n_medicos)]
+    medicos = [[f"m{i}", False, None, 0.0, 0.0,] for i in range(n_medicos)]
 
     chegadas_d = {}
     ent_consulta_d = {}
@@ -42,6 +49,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
     while t_chegada_aux < tempo_simulacao:
         
         pessoa = PESSOAS[indice_pessoa % len(PESSOAS)]
+        pessoa['especialidade'] = mani.atribuir_especialidade(pessoa)
         id_unico = f"{pessoa['id']}_{indice_pessoa}" 
         
         chegadas_d[id_unico] = t_chegada_aux
