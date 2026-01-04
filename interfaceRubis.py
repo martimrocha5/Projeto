@@ -1,6 +1,3 @@
-# =========================
-# IMPORTS
-# =========================
 import FreeSimpleGUI as sg
 import matplotlib
 matplotlib.use("TkAgg")
@@ -11,10 +8,47 @@ import analisador as analise
 plt.style.use("ggplot")
 
 # =========================
-# FUNÇÕES DE DESENHO
+# FUNÇÕES DE VALIDAÇÃO
+# =========================
+def validar_float(valor, nome):
+    if valor.strip() == "":
+        sg.popup_error(f"O campo '{nome}' está vazio.")
+        return None
+    try:
+        v = float(valor)
+        if v < 0:
+            sg.popup_error(f"O campo '{nome}' não pode ser negativo.")
+            return None
+        return v
+    except ValueError:
+        sg.popup_error(f"O campo '{nome}' tem de ser um número.")
+        return None
+
+def validar_int(valor, nome):
+    if valor.strip() == "":
+        sg.popup_error(f"O campo '{nome}' está vazio.")
+        return None
+    try:
+        v = int(valor)
+        if v < 0:
+            sg.popup_error(f"O campo '{nome}' não pode ser negativo.")
+            return None
+        return v
+    except ValueError:
+        sg.popup_error(f"O campo '{nome}' tem de ser um número inteiro.")
+        return None
+
+# =========================
+# FUNÇÕES DE DESENHO (COM PROTEÇÃO 🛡️)
 # =========================
 
 def plot_fila_tempo(hist_fila, titulo):
+    # --- VERIFICAÇÃO DE SEGURANÇA ---
+    if not hist_fila or len(hist_fila) < 2:
+        sg.popup_ok(f"Dados insuficientes para gerar o gráfico: {titulo}\n\n(Tente aumentar o tempo de simulação)", title="Aviso de Box")
+        return
+    # --------------------------------
+    
     tempos, valores = zip(*hist_fila)
     plt.figure(titulo, figsize=(8, 5))
     plt.step(tempos, valores, where="post")
@@ -24,6 +58,12 @@ def plot_fila_tempo(hist_fila, titulo):
     plt.show()
 
 def plot_ocupacao_tempo(hist_ocupa):
+    # --- VERIFICAÇÃO DE SEGURANÇA ---
+    if not hist_ocupa or len(hist_ocupa) < 2:
+        sg.popup_ok("Dados insuficientes para gerar o gráfico de ocupação.", title="Aviso de Box")
+        return
+    # --------------------------------
+
     tempos, valores = zip(*hist_ocupa)
     plt.figure("Taxa de Ocupação", figsize=(8, 5))
     plt.plot(tempos, valores)
@@ -34,13 +74,29 @@ def plot_ocupacao_tempo(hist_ocupa):
     plt.show()
 
 def plot_distribuicao_tempo(hist_fila, titulo):
+    # --- VERIFICAÇÃO DE SEGURANÇA 1 ---
+    if not hist_fila or len(hist_fila) < 2:
+        sg.popup_ok(f"Dados insuficientes para a distribuição: {titulo}", title="Aviso de Box")
+        return
+    # ----------------------------------
+
     tempos, valores = zip(*hist_fila)
     dist = {}
 
     for i in range(len(tempos) - 1):
         dt = tempos[i + 1] - tempos[i]
         v = valores[i]
-        dist[v] = dist.get(v, 0) + dt
+        
+        if v in dist:
+            dist[v] += dt
+        else:
+            dist[v] = dt
+
+    # --- VERIFICAÇÃO DE SEGURANÇA 2 ---
+    if not dist:
+        sg.popup_ok(f"Não houve variação suficiente na fila para mostrar: {titulo}", title="Aviso de Box")
+        return
+    # ----------------------------------
 
     plt.figure(titulo, figsize=(7, 7))
     plt.pie(
@@ -105,47 +161,50 @@ def menu_graficos(res):
 # =========================
 
 def abrir_janela_analise():
-    dados = analise.carregar_e_validar("pessoas.json")
+    try:
+        dados = analise.carregar_e_validar("pessoas.json")
 
-    idades = analise.estatisticas_idades(dados)
-    faixas = analise.distribuir_faixas_etarias(dados)
-    fumadores = analise.distribuicao_fumadores(dados)
-    desportos = analise.distribuicao_desportos(dados)
-    distritos = analise.distribuicao_distritos(dados)
-    profs = analise.top_profissoes(dados)
+        idades = analise.estatisticas_idades(dados)
+        faixas = analise.distribuir_faixas_etarias(dados)
+        fumadores = analise.distribuicao_fumadores(dados)
+        desportos = analise.distribuicao_desportos(dados)
+        distritos = analise.distribuicao_distritos(dados)
+        profs = analise.top_profissoes(dados)
 
-    txt_idade = (
-        f"Media: {idades['media']:.1f}\n"
-        f"Min: {idades['min']} | Max: {idades['max']}\n\nFaixas:\n"
-    )
-    for k, v in faixas.items():
-        txt_idade += f"- {k}: {v}\n"
+        txt_idade = (
+            f"Media: {idades['media']:.1f}\n"
+            f"Min: {idades['min']} | Max: {idades['max']}\n\nFaixas:\n"
+        )
+        for k, v in faixas.items():
+            txt_idade += f"- {k}: {v}\n"
 
-    txt_profs = "Top Profissoes:\n"
-    for k, v in profs:
-        txt_profs += f"* {k}: {v}\n"
+        txt_profs = "Top Profissoes:\n"
+        for k, v in profs:
+            txt_profs += f"* {k}: {v}\n"
 
-    layout = [
-        [sg.Text("Painel de Analise de Dados", font=("Arial", 14, "bold"))],
-        [sg.TabGroup([[
-            sg.Tab("Idades", [[sg.Multiline(txt_idade, size=(45, 12), disabled=True)]]),
-            sg.Tab("Fumadores", [[sg.Listbox([f"{k}: {v}" for k,v in fumadores.items()], size=(45, 12))]]),
-            sg.Tab("Desportos", [[sg.Listbox([f"{k}: {v}" for k,v in desportos.items()], size=(45, 12))]]),
-            sg.Tab("Distritos", [[sg.Listbox([f"{k}: {v}" for k,v in distritos.items()], size=(45, 12))]]),
-            sg.Tab("Profissoes", [[sg.Multiline(txt_profs, size=(45, 12), disabled=True)]])
-        ]])],
-        [sg.Button("Fechar")]
-    ]
+        layout = [
+            [sg.Text("Painel de Analise de Dados", font=("Arial", 14, "bold"))],
+            [sg.TabGroup([[
+                sg.Tab("Idades", [[sg.Multiline(txt_idade, size=(45, 12), disabled=True)]]),
+                sg.Tab("Fumadores", [[sg.Listbox([f"{k}: {v}" for k,v in fumadores.items()], size=(45, 12))]]),
+                sg.Tab("Desportos", [[sg.Listbox([f"{k}: {v}" for k,v in desportos.items()], size=(45, 12))]]),
+                sg.Tab("Distritos", [[sg.Listbox([f"{k}: {v}" for k,v in distritos.items()], size=(45, 12))]]),
+                sg.Tab("Profissoes", [[sg.Multiline(txt_profs, size=(45, 12), disabled=True)]])
+            ]])],
+            [sg.Button("Fechar")]
+        ]
 
-    win = sg.Window("Estatisticas", layout, modal=True)
+        win = sg.Window("Estatisticas", layout, modal=True)
 
-    ativo = True
-    while ativo:
-        e, _ = win.read()
-        if e in (sg.WIN_CLOSED, "Fechar"):
-            ativo = False
+        ativo = True
+        while ativo:
+            e, _ = win.read()
+            if e in (sg.WIN_CLOSED, "Fechar"):
+                ativo = False
 
-    win.close()
+        win.close()
+    except Exception as e:
+        sg.popup_error(f"Erro ao carregar análise: {e}")
 
 # =========================
 # INTERFACE PRINCIPAL
@@ -191,13 +250,24 @@ def criar_interface():
             abrir_janela_analise()
 
         elif event == "-SIMULAR-":
+
+            # Validação
+            n_medicos = validar_int(values["-MEDICOS-"], "Médicos")
+            taxa = validar_float(values["-TAXA-"], "Taxa (doentes/h)")
+            tempo = validar_float(values["-TEMPO-"], "Tempo Consulta (min)")
+            duracao = validar_float(values["-DURACAO-"], "Duração (min)")
+
+            if None in (n_medicos, taxa, tempo, duracao):
+                continue
+
+            # Simulação
             dados = pr.simula(
-                int(values["-MEDICOS-"]),
-                float(values["-TAXA-"]),
-                float(values["-TEMPO-"]),
-                float(values["-DURACAO-"]),
+                n_medicos,
+                taxa,
+                tempo,
+                duracao,
                 values["-DIST-"]
-            )
+            )            
 
             texto = (
                 f"Atendidos: {dados['total_atendidos']}\n"

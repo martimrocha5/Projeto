@@ -83,8 +83,6 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
         evento, queueEventos = mani.dequeue(queueEventos)
         tempo_atual = evento[0]
 
-        # 👉 ALTERAÇÃO PRINCIPAL:
-        # ignora eventos depois do tempo de simulação
         if tempo_atual > tempo_simulacao:
             continue
 
