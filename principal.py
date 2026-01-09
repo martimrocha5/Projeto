@@ -223,3 +223,5 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
 
 if __name__ == "__main__":
     simula(3, 10, 15, 480, "exponential")
+
+

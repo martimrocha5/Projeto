@@ -4,6 +4,9 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import principal as pr
 import analisador as analise
+import json
+import os
+from datetime import datetime
 
 plt.style.use("ggplot")
 
@@ -187,22 +190,107 @@ def abrir_janela_analise():
         layout = [
             [sg.Text("Painel de Analise de Dados", font=("Arial", 14, "bold"))],
             [sg.TabGroup([[
-                sg.Tab("Idades", [[sg.Multiline(txt_idade, size=(45, 12), disabled=True)]]),
-                sg.Tab("Fumadores", [[sg.Listbox([f"{k}: {v}" for k,v in fumadores.items()], size=(45, 12))]]),
-                sg.Tab("Desportos", [[sg.Listbox([f"{k}: {v}" for k,v in desportos.items()], size=(45, 12))]]),
-                sg.Tab("Distritos", [[sg.Listbox([f"{k}: {v}" for k,v in distritos.items()], size=(45, 12))]]),
-                sg.Tab("Profissoes", [[sg.Multiline(txt_profs, size=(45, 12), disabled=True)]])
-            ]])],
-            [sg.Button("Fechar")]
+                sg.Tab("Idades", [[sg.Multiline(txt_idade, size=(45, 12), disabled=True, key="-TAB-IDADES-")]]),
+                sg.Tab("Fumadores", [[sg.Listbox([f"{k}: {v}" for k,v in fumadores.items()], size=(45, 12), key="-TAB-FUMADORES-")]]),
+                sg.Tab("Desportos", [[sg.Listbox([f"{k}: {v}" for k,v in desportos.items()], size=(45, 12), key="-TAB-DESPORTOS-")]]),
+                sg.Tab("Distritos", [[sg.Listbox([f"{k}: {v}" for k,v in distritos.items()], size=(45, 12), key="-TAB-DISTRITOS-")]]),
+                sg.Tab("Profissoes", [[sg.Multiline(txt_profs, size=(45, 12), disabled=True, key="-TAB-PROFS-")]])
+            ]], key="-TABGROUP-")],
+            [sg.Button("Guardar"), sg.Button("Fechar")]
         ]
 
         win = sg.Window("Estatisticas", layout, modal=True)
 
         ativo = True
         while ativo:
-            e, _ = win.read()
+            e, values = win.read()
             if e in (sg.WIN_CLOSED, "Fechar"):
                 ativo = False
+            elif e == "Guardar":
+                tab_selecionada = values["-TABGROUP-"]
+                
+                # Criar dados completos com todas as categorias
+                dados_completos = {
+                    "Idades": {
+                        "media": idades['media'],
+                        "minimo": idades['min'],
+                        "maximo": idades['max'],
+                        "faixas": faixas
+                    },
+                    "Fumadores": fumadores,
+                    "Desportos": desportos,
+                    "Distritos": distritos,
+                    "Profissoes": [{"profissao": prof, "quantidade": qtd} for prof, qtd in profs]
+                }
+                
+                layout_guardar = [
+                    [sg.Text("Guardar relatório completo", font=("Helvetica", 12, "bold"))],
+                    [sg.Button("Guardar em JSON", key="-JSON-", size=(20, 2), font=("Helvetica", 11))],
+                    [sg.Button("Guardar em TXT", key="-TXT-", size=(20, 2), font=("Helvetica", 11))],
+                    [sg.Button("Cancelar", key="-CANCELAR-", size=(20, 2), font=("Helvetica", 11))]
+                ]
+                
+                win_guardar = sg.Window("Guardar Análise", layout_guardar, modal=True)
+                
+                while True:
+                    event_guardar, _ = win_guardar.read()
+                    
+                    if event_guardar in (sg.WIN_CLOSED, "-CANCELAR-"):
+                        break
+                    elif event_guardar == "-JSON-":
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        filename = f"analise_completa_{timestamp}.json"
+                        try:
+                            with open(filename, 'w', encoding='utf-8') as f:
+                                json.dump(dados_completos, f, indent=4, ensure_ascii=False)
+                            sg.popup_ok(f"Análise guardada em: {filename}", title="Sucesso")
+                        except Exception as ex:
+                            sg.popup_error(f"Erro ao guardar JSON: {ex}", title="Erro")
+                        break
+                    elif event_guardar == "-TXT-":
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        filename = f"analise_completa_{timestamp}.txt"
+                        try:
+                            with open(filename, 'w', encoding='utf-8') as f:
+                                f.write("RELATÓRIO COMPLETO DE ANÁLISE DE DADOS\n")
+                                f.write("=" * 60 + "\n\n")
+                                f.write(f"Data: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n\n")
+                                
+                                f.write("IDADES\n")
+                                f.write("-" * 60 + "\n")
+                                f.write(f"Média: {idades['media']:.1f}\n")
+                                f.write(f"Mínimo: {idades['min']} | Máximo: {idades['max']}\n")
+                                f.write("Faixas Etárias:\n")
+                                for k, v in faixas.items():
+                                    f.write(f"  - {k}: {v}\n")
+                                
+                                f.write("\nFUMADORES\n")
+                                f.write("-" * 60 + "\n")
+                                for k, v in fumadores.items():
+                                    f.write(f"  - {k}: {v}\n")
+                                
+                                f.write("\nDESPORTOS\n")
+                                f.write("-" * 60 + "\n")
+                                for k, v in desportos.items():
+                                    f.write(f"  - {k}: {v}\n")
+                                
+                                f.write("\nDISTRITOS\n")
+                                f.write("-" * 60 + "\n")
+                                for k, v in distritos.items():
+                                    f.write(f"  - {k}: {v}\n")
+                                
+                                f.write("\nPROFISSÕES (TOP)\n")
+                                f.write("-" * 60 + "\n")
+                                for prof, qtd in profs:
+                                    f.write(f"  - {prof}: {qtd}\n")
+                                
+                                f.write("\n" + "=" * 60 + "\n")
+                            sg.popup_ok(f"Análise guardada em: {filename}", title="Sucesso")
+                        except Exception as ex:
+                            sg.popup_error(f"Erro ao guardar TXT: {ex}", title="Erro")
+                        break
+                
+                win_guardar.close()
 
         win.close()
     except Exception as e:
@@ -273,7 +361,10 @@ def criar_interface():
                 [sg.Button("Abrir Menu de\nGráficos", key="-GRAF-", visible=False,
                           font=("Helvetica", 11), size=(15, 3),
                           button_color=("white", "orange"))],
-                [sg.Text(" " * 20)]
+                [sg.Button("Guardar", key="-GUARDAR-", visible=False,
+                          font=("Helvetica", 11), size=(15, 2),
+                          button_color=("white", "purple"))]
+
             ], vertical_alignment="top")
         ]
     ]
@@ -376,9 +467,58 @@ def criar_interface():
             conteudo_atual = window["-OUTPUT-"].get()
             window["-OUTPUT-"].update(conteudo_atual + resumo)
             window["-GRAF-"].update(visible=True)
+            window["-GUARDAR-"].update(visible=True)
 
         elif event == "-GRAF-" and dados:
             menu_graficos(dados)
+
+        elif event == "-GUARDAR-" and dados:
+            layout_guardar = [
+                [sg.Text("Escolha o formato para guardar:", font=("Helvetica", 12, "bold"))],
+                [sg.Button("Guardar em JSON", key="-JSON-", size=(20, 2), font=("Helvetica", 11))],
+                [sg.Button("Guardar em TXT", key="-TXT-", size=(20, 2), font=("Helvetica", 11))],
+                [sg.Button("Cancelar", key="-CANCELAR-", size=(20, 2), font=("Helvetica", 11))]
+            ]
+            
+            win_guardar = sg.Window("Guardar Resultados", layout_guardar, modal=True)
+            
+            while True:
+                event_guardar, _ = win_guardar.read()
+                
+                if event_guardar in (sg.WIN_CLOSED, "-CANCELAR-"):
+                    break
+                elif event_guardar == "-JSON-":
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    filename = f"relatorio_{timestamp}.json"
+                    try:
+                        with open(filename, 'w', encoding='utf-8') as f:
+                            json.dump(dados, f, indent=4, ensure_ascii=False)
+                        sg.popup_ok(f"Relatório guardado em: {filename}", title="Sucesso")
+                    except Exception as e:
+                        sg.popup_error(f"Erro ao guardar JSON: {e}", title="Erro")
+                    break
+                elif event_guardar == "-TXT-":
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    filename = f"relatorio_{timestamp}.txt"
+                    try:
+                        with open(filename, 'w', encoding='utf-8') as f:
+                            f.write("RELATÓRIO DE SIMULAÇÃO DE CLÍNICA MÉDICA\n")
+                            f.write("=" * 50 + "\n\n")
+                            f.write(f"Data: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n\n")
+                            f.write(f"✅ Total de Doentes Atendidos: {dados['total_atendidos']}\n")
+                            f.write(f"⏱️  Tempo Médio de Espera: {dados['media_espera']:.2f} min\n")
+                            f.write(f"🏥 Tempo Médio na Clínica: {dados['media_clinica']:.2f} min\n")
+                            f.write(f"⏳ Doentes que ficaram à espera: {dados['fila_final']}\n\n")
+                            f.write("📌 Doentes por Especialidade:\n")
+                            for esp, qtd in dados["contagem_especialidades"].items():
+                                f.write(f"   - {esp}: {qtd}\n")
+                            f.write("=" * 50 + "\n")
+                        sg.popup_ok(f"Relatório guardado em: {filename}", title="Sucesso")
+                    except Exception as e:
+                        sg.popup_error(f"Erro ao guardar TXT: {e}", title="Erro")
+                    break
+            
+            win_guardar.close()
 
     window.close()
 

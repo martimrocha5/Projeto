@@ -1,0 +1,15 @@
+RELATÓRIO DE SIMULAÇÃO DE CLÍNICA MÉDICA
+==================================================
+
+Data: 09/01/2026 19:47:49
+
+✅ Total de Doentes Atendidos: 65
+⏱️  Tempo Médio de Espera: 32.76 min
+🏥 Tempo Médio na Clínica: 48.86 min
+⏳ Doentes que ficaram à espera: 11
+
+📌 Doentes por Especialidade:
+   - Cardiologia: 21
+   - Clínica Geral: 16
+   - Pneumologia: 29
+==================================================

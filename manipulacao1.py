@@ -121,3 +121,4 @@ def atribuir_especialidade(pessoa):
     else:
         cond = "Clínica Geral"
     return cond
+
