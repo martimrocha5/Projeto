@@ -136,7 +136,7 @@ def menu_graficos(res):
     while ativo:
         event, _ = win.read()
 
-        if event in (sg.WIN_CLOSED, "-SAIR-"):
+        if event in (sg.WIN_CLOSED, "Fechar"):
             ativo = False
 
         elif event == "Fila Total":
