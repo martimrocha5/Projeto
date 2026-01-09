@@ -20,7 +20,7 @@ especialidades = ["Cardiologia", "Clínica Geral", "Pneumologia"]
 # ===============================
 # FUNÇÃO PRINCIPAL
 # ===============================
-def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
+def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, callback_evento=None, callback_progresso=None):
 
     mani.NUM_MEDICOS = n_medicos
     mani.TAXA_CHEGADA = taxa_chegada / 60
@@ -53,6 +53,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
 
     indice_pessoa = 0
     t_chegada_aux = mani.gera_intervalo_tempo_chegada(mani.TAXA_CHEGADA)
+    contador_eventos = 0
 
     # ===============================
     # GERAÇÃO DE CHEGADAS
@@ -86,6 +87,11 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
         if tempo_atual > tempo_simulacao:
             continue
 
+        # Atualizar barra de progresso
+        if callback_progresso:
+            percentagem = (tempo_atual / tempo_simulacao) * 100
+            callback_progresso(percentagem)
+
         id_unico, dados_doente = evento[2]
 
         ocupados = sum(1 for m in medicos if m[1])
@@ -94,12 +100,20 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
         # -------- CHEGADA --------
         if evento[1] == CHEGADA:
             esp = dados_doente["especialidade"]
-            print(f"[{round(tempo_atual,2):6} min] 👤 Chegada: {dados_doente['nome']} ({esp})")
+            msg_chegada = f"\n[{round(tempo_atual,2):6} min] 👤 Chegada: {dados_doente['nome']} ({esp})"
+            print(msg_chegada)
+            
+            if callback_evento:
+                callback_evento(msg_chegada + "\n")
 
             medico = mani.procuraMedico(medicos, esp)
 
             if medico:
-                print(f"       ✅ Atendimento imediato por {medico[0]}")
+                msg_atend = f"            ✅ Atendimento imediato por {medico[0]}"
+                print(msg_atend)
+                if callback_evento:
+                    callback_evento(msg_atend + "\n")
+                    
                 medico[1] = True
                 medico[2] = id_unico
                 medico[4] = tempo_atual
@@ -116,11 +130,18 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
                 total_fila = sum(len(f) for f in fila_espera.values())
                 hist_fila.append((tempo_atual, total_fila))
                 hist_fila_esp[esp].append((tempo_atual, len(fila_espera[esp])))
-                print(f"       ⏳ Entrou na fila de {esp} (Fila: {len(fila_espera[esp])})")
+                msg_fila = f"            ⏳ Entrou na fila de {esp} (Tamanho: {len(fila_espera[esp])})"
+                print(msg_fila)
+                if callback_evento:
+                    callback_evento(msg_fila + "\n")
 
         # -------- SAÍDA --------
         elif evento[1] == SAIDA:
-            print(f"[{round(tempo_atual,2):6} min] 🏁 Fim consulta: {dados_doente['nome']}")
+            msg_saida = f"\n[{round(tempo_atual,2):6} min] 🏁 Fim consulta: {dados_doente['nome']}"
+            print(msg_saida)
+            if callback_evento:
+                callback_evento(msg_saida + "\n")
+                
             doentes_atendidos += 1
             saida_d[id_unico] = tempo_atual
 
@@ -139,7 +160,10 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
             if fila_esp:
                 p_id, p_dados, t_chegada_f = fila_esp.pop(0)
                 espera = tempo_atual - t_chegada_f
-                print(f"       📲 {m[0]} chamou {p_dados['nome']} (espera: {round(espera,1)} min)")
+                msg_chamada = f"            📲 {m[0]} chamou {p_dados['nome']} (espera: {round(espera,1)} min)"
+                print(msg_chamada)
+                if callback_evento:
+                    callback_evento(msg_chamada + "\n")
 
                 total_fila = sum(len(f) for f in fila_espera.values())
                 hist_fila.append((tempo_atual, total_fila))
@@ -156,6 +180,12 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
                     queueEventos,
                     (tempo_atual + t_cons, SAIDA, (p_id, p_dados))
                 )
+        
+        contador_eventos += 1
+
+    # Garantir que a barra chega a 100% no final
+    if callback_progresso:
+        callback_progresso(100)
 
     # ===============================
     # ESTATÍSTICAS FINAIS
