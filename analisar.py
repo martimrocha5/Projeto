@@ -106,5 +106,3 @@ def distribuir_faixas_etarias(lista):
             res["71+"] += 1
 
     return res
-
-

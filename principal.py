@@ -1,6 +1,7 @@
 import json
 import numpy as np
-import manipulacao1 as mani
+import manipulacao as mani
+import FreeSimpleGUI as sg
 
 # ===============================
 # CONSTANTES
@@ -20,7 +21,7 @@ especialidades = ["Cardiologia", "Clínica Geral", "Pneumologia"]
 # ===============================
 # FUNÇÃO PRINCIPAL
 # ===============================
-def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, callback_evento=None, callback_progresso=None):
+def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, window=None):
 
     mani.NUM_MEDICOS = n_medicos
     mani.TAXA_CHEGADA = taxa_chegada / 60
@@ -87,33 +88,38 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
         if tempo_atual > tempo_simulacao:
             continue
 
-        # Atualizar barra de progresso
-        if callback_progresso:
+        if window:
             percentagem = (tempo_atual / tempo_simulacao) * 100
-            callback_progresso(percentagem)
+            window["-PROGRESS-"].update_bar(percentagem, 100)
+            window["-PROGRESS-TEXT-"].update(f"{int(percentagem)}%")
+            window.refresh()
 
         id_unico, dados_doente = evento[2]
-
         ocupados = sum(1 for m in medicos if m[1])
         hist_ocupa.append((tempo_atual, (ocupados / n_medicos) * 100))
 
-        # -------- CHEGADA --------
         if evento[1] == CHEGADA:
             esp = dados_doente["especialidade"]
             msg_chegada = f"\n[{round(tempo_atual,2):6} min] 👤 Chegada: {dados_doente['nome']} ({esp})"
             print(msg_chegada)
             
-            if callback_evento:
-                callback_evento(msg_chegada + "\n")
+            if window:
+                conteudo_atual = window["-OUTPUT-"].get()
+                window["-OUTPUT-"].update(conteudo_atual + msg_chegada + "\n")
+                window["-OUTPUT-"].Widget.see(sg.tk.END)
+                window.refresh()
 
             medico = mani.procuraMedico(medicos, esp)
 
             if medico:
                 msg_atend = f"            ✅ Atendimento imediato por {medico[0]}"
                 print(msg_atend)
-                if callback_evento:
-                    callback_evento(msg_atend + "\n")
-                    
+                if window:
+                    conteudo_atual = window["-OUTPUT-"].get()
+                    window["-OUTPUT-"].update(conteudo_atual + msg_atend + "\n")
+                    window["-OUTPUT-"].Widget.see(sg.tk.END)
+                    window.refresh()
+                
                 medico[1] = True
                 medico[2] = id_unico
                 medico[4] = tempo_atual
@@ -121,10 +127,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                 contagem_especialidades[esp] += 1
 
                 t_cons = mani.gera_tempo_consulta(dados_doente)
-                queueEventos = mani.enqueue(
-                    queueEventos,
-                    (tempo_atual + t_cons, SAIDA, (id_unico, dados_doente))
-                )
+                queueEventos = mani.enqueue(queueEventos, (tempo_atual + t_cons, SAIDA, (id_unico, dados_doente)))
             else:
                 fila_espera[esp].append((id_unico, dados_doente, tempo_atual))
                 total_fila = sum(len(f) for f in fila_espera.values())
@@ -132,16 +135,21 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                 hist_fila_esp[esp].append((tempo_atual, len(fila_espera[esp])))
                 msg_fila = f"            ⏳ Entrou na fila de {esp} (Tamanho: {len(fila_espera[esp])})"
                 print(msg_fila)
-                if callback_evento:
-                    callback_evento(msg_fila + "\n")
+                if window:
+                    conteudo_atual = window["-OUTPUT-"].get()
+                    window["-OUTPUT-"].update(conteudo_atual + msg_fila + "\n")
+                    window["-OUTPUT-"].Widget.see(sg.tk.END)
+                    window.refresh()
 
-        # -------- SAÍDA --------
         elif evento[1] == SAIDA:
             msg_saida = f"\n[{round(tempo_atual,2):6} min] 🏁 Fim consulta: {dados_doente['nome']}"
             print(msg_saida)
-            if callback_evento:
-                callback_evento(msg_saida + "\n")
-                
+            if window:
+                conteudo_atual = window["-OUTPUT-"].get()
+                window["-OUTPUT-"].update(conteudo_atual + msg_saida + "\n")
+                window["-OUTPUT-"].Widget.see(sg.tk.END)
+                window.refresh()
+            
             doentes_atendidos += 1
             saida_d[id_unico] = tempo_atual
 
@@ -162,8 +170,11 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                 espera = tempo_atual - t_chegada_f
                 msg_chamada = f"            📲 {m[0]} chamou {p_dados['nome']} (espera: {round(espera,1)} min)"
                 print(msg_chamada)
-                if callback_evento:
-                    callback_evento(msg_chamada + "\n")
+                if window:
+                    conteudo_atual = window["-OUTPUT-"].get()
+                    window["-OUTPUT-"].update(conteudo_atual + msg_chamada + "\n")
+                    window["-OUTPUT-"].Widget.see(sg.tk.END)
+                    window.refresh()
 
                 total_fila = sum(len(f) for f in fila_espera.values())
                 hist_fila.append((tempo_atual, total_fila))
@@ -176,16 +187,14 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                 contagem_especialidades[esp] += 1
 
                 t_cons = mani.gera_tempo_consulta(p_dados)
-                queueEventos = mani.enqueue(
-                    queueEventos,
-                    (tempo_atual + t_cons, SAIDA, (p_id, p_dados))
-                )
+                queueEventos = mani.enqueue(queueEventos, (tempo_atual + t_cons, SAIDA, (p_id, p_dados)))
         
         contador_eventos += 1
 
-    # Garantir que a barra chega a 100% no final
-    if callback_progresso:
-        callback_progresso(100)
+    if window:
+        window["-PROGRESS-"].update_bar(100, 100)
+        window["-PROGRESS-TEXT-"].update("100%")
+        window.refresh()
 
     # ===============================
     # ESTATÍSTICAS FINAIS
