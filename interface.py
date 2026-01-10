@@ -210,7 +210,7 @@ def criar_interface():
 
             dados = principal.simula(n_medicos, taxa, tempo, duracao, values["-DIST-"], window=window)
 
-            resumo = f"\n{'=' * 50}\n✅ Total de Doentes Atendidos: {dados['total_atendidos']}\n⏱️  Tempo Médio de Espera: {dados['media_espera']:.2f} min\n🏥 Tempo Médio na Clínica: {dados['media_clinica']:.2f} min\n⏳ Doentes que ficaram à espera: {dados['fila_final']}\n📌 Doentes por Especialidade:\n"
+            resumo = f"\n{'=' * 50}\nTotal de Doentes Atendidos: {dados['total_atendidos']}\nTempo Médio de Espera: {dados['media_espera']:.2f} min\nTempo Médio na Clínica: {dados['media_clinica']:.2f} min\nDoentes que ficaram à espera: {dados['fila_final']}\nDoentes por Especialidade:\n"
             for esp, qtd in dados["contagem_especialidades"].items():
                 resumo += f"   - {esp}: {qtd}\n"
             resumo += "=" * 50
@@ -255,11 +255,11 @@ def criar_interface():
                     try:
                         with open(filename, 'w', encoding='utf-8') as f:
                             f.write("RELATÓRIO DE SIMULAÇÃO DE CLÍNICA MÉDICA\n" + "=" * 50 + f"\nData: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n\n")
-                            f.write(f"✅ Total de Doentes Atendidos: {dados['total_atendidos']}\n")
-                            f.write(f"⏱️  Tempo Médio de Espera: {dados['media_espera']:.2f} min\n")
-                            f.write(f"🏥 Tempo Médio na Clínica: {dados['media_clinica']:.2f} min\n")
-                            f.write(f"⏳ Doentes que ficaram à espera: {dados['fila_final']}\n\n")
-                            f.write("📌 Doentes por Especialidade:\n")
+                            f.write(f"Total de Doentes Atendidos: {dados['total_atendidos']}\n")
+                            f.write(f"Tempo Médio de Espera: {dados['media_espera']:.2f} min\n")
+                            f.write(f"Tempo Médio na Clínica: {dados['media_clinica']:.2f} min\n")
+                            f.write(f"Doentes que ficaram à espera: {dados['fila_final']}\n\n")
+                            f.write("Doentes por Especialidade:\n")
                             for esp, qtd in dados["contagem_especialidades"].items():
                                 f.write(f"   - {esp}: {qtd}\n")
                             f.write("=" * 50 + "\n")

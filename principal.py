@@ -36,10 +36,10 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
     medicos = mani.criarMedico(n_medicos, especialidades)
 
     print("\n" + "=" * 40)
-    print(f"🏥 CLÍNICA ABERTA - {n_medicos} MÉDICOS")
+    print(f"CLÍNICA ABERTA - {n_medicos} MÉDICOS")
     print("=" * 40)
     for m in medicos:
-        print(f"🩺 {m[0]} -> {m[5]}")
+        print(f"{m[0]} -> {m[5]}")
     print("-" * 40 + "\n")
 
     chegadas_d = {}
@@ -100,7 +100,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
 
         if evento[1] == CHEGADA:
             esp = dados_doente["especialidade"]
-            msg_chegada = f"\n[{round(tempo_atual,2):6} min] 👤 Chegada: {dados_doente['nome']} ({esp})"
+            msg_chegada = f"\n[{round(tempo_atual,2):6} min] Chegada: {dados_doente['nome']} ({esp})"
             print(msg_chegada)
             
             if window:
@@ -112,7 +112,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
             medico = mani.procuraMedico(medicos, esp)
 
             if medico:
-                msg_atend = f"            ✅ Atendimento imediato por {medico[0]}"
+                msg_atend = f"            Atendimento imediato por {medico[0]}"
                 print(msg_atend)
                 if window:
                     conteudo_atual = window["-OUTPUT-"].get()
@@ -133,7 +133,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                 total_fila = sum(len(f) for f in fila_espera.values())
                 hist_fila.append((tempo_atual, total_fila))
                 hist_fila_esp[esp].append((tempo_atual, len(fila_espera[esp])))
-                msg_fila = f"            ⏳ Entrou na fila de {esp} (Tamanho: {len(fila_espera[esp])})"
+                msg_fila = f"            Entrou na fila de {esp} (Tamanho: {len(fila_espera[esp])})"
                 print(msg_fila)
                 if window:
                     conteudo_atual = window["-OUTPUT-"].get()
@@ -142,7 +142,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
                     window.refresh()
 
         elif evento[1] == SAIDA:
-            msg_saida = f"\n[{round(tempo_atual,2):6} min] 🏁 Fim consulta: {dados_doente['nome']}"
+            msg_saida = f"\n[{round(tempo_atual,2):6} min] Fim consulta: {dados_doente['nome']}"
             print(msg_saida)
             if window:
                 conteudo_atual = window["-OUTPUT-"].get()
@@ -168,7 +168,7 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
             if fila_esp:
                 p_id, p_dados, t_chegada_f = fila_esp.pop(0)
                 espera = tempo_atual - t_chegada_f
-                msg_chamada = f"            📲 {m[0]} chamou {p_dados['nome']} (espera: {round(espera,1)} min)"
+                msg_chamada = f"            {m[0]} chamou {p_dados['nome']} (espera: {round(espera,1)} min)"
                 print(msg_chamada)
                 if window:
                     conteudo_atual = window["-OUTPUT-"].get()
@@ -208,13 +208,13 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
     total_fila_final = sum(len(f) for f in fila_espera.values())
 
     print("\n" + "=" * 40)
-    print("📊 RELATÓRIO FINAL DA SIMULAÇÃO")
+    print("RELATÓRIO FINAL DA SIMULAÇÃO")
     print("=" * 40)
-    print(f"✅ Total Doentes Atendidos: {doentes_atendidos}")
-    print(f"⏱️  Tempo Médio de Espera: {media_espera:.2f} min")
-    print(f"🏥 Tempo Médio na Clínica: {media_clinica:.2f} min")
-    print(f"⏳ Doentes que ficaram à espera: {total_fila_final}")
-    print("📌 Doentes por Especialidade:")
+    print(f"Total Doentes Atendidos: {doentes_atendidos}")
+    print(f"Tempo Médio de Espera: {media_espera:.2f} min")
+    print(f"Tempo Médio na Clínica: {media_clinica:.2f} min")
+    print(f"Doentes que ficaram à espera: {total_fila_final}")
+    print("Doentes por Especialidade:")
     for esp, qtd in contagem_especialidades.items():
         print(f"   - {esp}: {qtd}")
     print("=" * 40 + "\n")
@@ -232,5 +232,4 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao, 
 
 if __name__ == "__main__":
     simula(3, 10, 15, 480, "exponential")
-
 
