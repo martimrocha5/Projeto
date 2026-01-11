@@ -3,18 +3,23 @@
 ## Autores
 
 Bárbara Jacques, a109722
+
 Esmeralda Freitas, a109932
+
 Martim Rocha, a112252
 
-## Data de Execução
+## Data
 
-7 de Novembro de 2025 a 11 de Janeiro de 2026
+29 de dezembro de 2025
 
 ## Enquadramento Institucional
 
 **Instituição:** Universidade do Minho – Escola de Engenharia
+
 **Curso:** Licenciatura em Engenharia Biomédica (2.º ano)
+
 **Unidade Curricular:** Algoritmos e Técnicas de Programação
+
 **Projeto laboratorial idealizado e coordenado por:** José Carlos Ramalho e Luís Filipe Cunha
 
 ## Visão Geral do Projeto
