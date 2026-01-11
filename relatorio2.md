@@ -1,11 +1,3 @@
-import os
-
-# Nome do ficheiro a ser criado
-nome_ficheiro = "Relatorio_Final_Clinica.md"
-
-# Conteúdo do relatório
-# Nota: Já inseri as imagens nos locais corretos (src="nome_do_ficheiro.ext")
-conteudo = r"""
 # Relatório do Projeto: Simulação de uma Clínica Médica
 
 ## Autores
