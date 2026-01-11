@@ -149,13 +149,14 @@ def abrir_janela_analise():
 def criar_interface():
     sg.theme("LightBlue2")
 
+    # Aumentei o size=(20,1) para size=(28,1) para caber o texto maior
     layout_config = [
         [sg.Text("Configurações", font=("Helvetica", 16, "bold"))],
-        [sg.Text("Médicos:", size=(20,1), font=("Helvetica", 14)), sg.Input("3", key="-MEDICOS-", size=(10,), font=("Helvetica", 13))],
-        [sg.Text("Taxa (doentes/h):", size=(20,1), font=("Helvetica", 14)), sg.Input("10", key="-TAXA-", size=(10,), font=("Helvetica", 13))],
-        [sg.Text("Tempo de Consulta (min):", size=(20,1), font=("Helvetica", 14)), sg.Input("15", key="-TEMPO-", size=(10,), font=("Helvetica", 13))],
-        [sg.Text("Duração da Simulação (min):", size=(20,1), font=("Helvetica", 14)), sg.Input("480", key="-DURACAO-", size=(10,), font=("Helvetica", 13))],
-        [sg.Text("Distribuição:", size=(20,1), font=("Helvetica", 14)), sg.Combo(["exponential", "normal", "uniform"], default_value="exponential", key="-DIST-", readonly=True, font=("Helvetica", 13))]
+        [sg.Text("Médicos:", size=(28,1), font=("Helvetica", 14)), sg.Input("3", key="-MEDICOS-", size=(10,), font=("Helvetica", 13))],
+        [sg.Text("Taxa (doentes/h):", size=(28,1), font=("Helvetica", 14)), sg.Input("10", key="-TAXA-", size=(10,), font=("Helvetica", 13))],
+        [sg.Text("Tempo de Consulta (min):", size=(28,1), font=("Helvetica", 14)), sg.Input("15", key="-TEMPO-", size=(10,), font=("Helvetica", 13))],
+        [sg.Text("Duração da Simulação (min):", size=(28,1), font=("Helvetica", 14)), sg.Input("480", key="-DURACAO-", size=(10,), font=("Helvetica", 13))],
+        [sg.Text("Distribuição:", size=(28,1), font=("Helvetica", 14)), sg.Combo(["exponential", "normal", "uniform"], default_value="exponential", key="-DIST-", readonly=True, font=("Helvetica", 13))]
     ]
 
     layout_botoes = [
