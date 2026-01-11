@@ -2,9 +2,9 @@
 
 ## Autores
 
-Barbara Jacques
-Esmeralda Freitas
-Martim Rocha
+Bárbara Jacques, a109722
+Esmeralda Freitas, a109932
+Martim Rocha, a112252
 
 ## Data de Execução
 
@@ -19,7 +19,7 @@ Martim Rocha
 
 ## Visão Geral do Projeto
 
-No âmbito da unidade curricular de Algoritmos e Técnicas de Programação, foi proposto o desenvolvimento de uma aplicação em Python destinada à **simulação do funcionamento de uma clínica médica**. O objetivo principal do projeto consiste em modelar, de forma realista, o atendimento de doentes numa clínica, recorrendo a processos estocásticos e a uma simulação de eventos discretos.
+No âmbito da unidade curricular de Algoritmos e Técnicas de Programação, foi proposto o desenvolvimento de uma aplicação em Python destinada à **simulação do funcionamento de uma clínica médica**. O objetivo principal do projeto consiste em modelar, de forma realista, o atendimento de doentes numa clínica, recorrendo a processos probabilísticos e a uma simulação de eventos discretos.
 
 A aplicação permite analisar o impacto de diferentes parâmetros, tais como a taxa de chegada de doentes, o número de médicos disponíveis e o tempo médio de consulta, no desempenho global do sistema.
 
@@ -87,6 +87,98 @@ A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **Sim
 * (Funcionalidade extra) Visualizar graficamente a fila de espera e a ocupação dos consultórios.
 
 A interface foi concebida de forma a facilitar a interação do utilizador com a simulação e a interpretação dos resultados obtidos.
+
+## Integração de Dados Reais de Doentes
+
+Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
+
+### Exemplo de Estrutura do Dataset JSON
+
+O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento representa um possível doente da clínica. Cada registo inclui informação como nome, idade, morada, hábitos de saúde e outros atributos relevantes. Um excerto simplificado do dataset é apresentado de seguida:
+
+```json
+{
+  "nome": "Neyanne Sampaio",
+  "idade": 47,
+  "sexo": "feminino",
+  "morada": {
+    "cidade": "Ferreira do Alentejo",
+    "distrito": "Beja"
+  },
+  "profissao": "Programador de aplicações",
+  "desportos": ["Peteca", "Rugby de praia"],
+  "atributos": {
+    "fumador": true,
+    "gosta_musica": true,
+    "comida_favorita": "vegetariana"
+  },
+  "id": "p0"
+}
+```
+
+### Carregamento e Validação dos Dados
+
+O carregamento do dataset é realizado através de uma função dedicada, responsável por ler o ficheiro JSON e devolver a lista de pessoas a utilizar na simulação:
+
+```python
+import json
+
+def carregar_e_validar(caminho):
+    """Carrega o JSON e devolve a lista de pessoas."""
+    with open(caminho, "r", encoding="utf-8") as f:
+        dados = json.load(f)
+    return dados
+```
+
+### Cálculo de Estatísticas Demográficas
+
+A partir da lista de pessoas carregada, são calculadas várias estatísticas que permitem caracterizar a população atendida pela clínica. Por exemplo, o cálculo da idade média, mínima e máxima é realizado da seguinte forma:
+
+```python
+def estatisticas_idades(lista):
+    soma = 0
+    contagem = 0
+    min_idade = 999
+    max_idade = -1
+
+    for p in lista:
+        idade = p["idade"]
+        soma += idade
+        contagem += 1
+        if idade < min_idade:
+            min_idade = idade
+        if idade > max_idade:
+            max_idade = idade
+
+    return {
+        "media": soma / contagem if contagem > 0 else 0,
+        "min": min_idade,
+        "max": max_idade,
+        "total": contagem
+    }
+```
+
+De forma semelhante, são implementadas funções para calcular a distribuição por distrito, hábitos de consumo (fumadores e não fumadores), prática de desporto, profissões mais frequentes e faixas etárias.
+
+Estas estatísticas permitem enriquecer a análise da simulação, possibilitando estudos adicionais como o impacto da idade, localização geográfica ou estilo de vida na procura por determinadas especialidades médicas.
+
+Além disso, os resultados estatísticos obtidos podem ser representados graficamente e **exportados para ficheiros JSON e TXT**, assegurando persistência dos dados, reprodutibilidade das experiências e facilidade de análise posterior.
+
+Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
+
+O carregamento e validação dos dados é realizado através de funções dedicadas, garantindo uma separação clara entre a lógica da simulação e o tratamento de dados. A partir deste conjunto de dados são extraídas diversas **estatísticas relevantes**, que permitem caracterizar a população atendida pela clínica.
+
+As estatísticas calculadas incluem:
+
+* **Distribuição etária**: cálculo da idade média, mínima e máxima dos doentes, bem como a sua distribuição por faixas etárias;
+* **Distribuição geográfica**: análise da frequência de doentes por distrito;
+* **Hábitos de saúde**: distinção entre fumadores e não fumadores;
+* **Atividade física**: frequência da prática de diferentes desportos;
+* **Perfil profissional**: identificação das profissões mais comuns entre os doentes.
+
+Estas métricas permitem enriquecer a análise da simulação, possibilitando estudos adicionais como o impacto da idade ou do estilo de vida na procura por determinadas especialidades médicas.
+
+Além disso, os resultados estatísticos obtidos podem ser representados graficamente e **exportados para ficheiros JSON e TXT**, assegurando persistência dos dados, reprodutibilidade das experiências e facilidade de análise posterior.
 
 ## Tecnologias Utilizadas
 
