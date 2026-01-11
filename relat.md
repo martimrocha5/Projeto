@@ -163,7 +163,10 @@ A aplicação disponibiliza ainda um menu dedicado à visualização gráfica do
 Após a seleção, o gráfico correspondente é gerado e apresentado numa nova janela, facilitando a interpretação visual dos resultados da simulação.
 
 <p align="center">
-  <em>Figura 6: Exemplo de gráfico gerado a partir dos resultados da simulação.</em>
+    <img src="imagens/evol_fila.png" alt="Erro campo vazio" width="300"/>
+    <img src="imagens/taxa_ocupacao.png" alt="Erro tipo de dados" width="300"/>
+    <br>
+    <em>Figura 6: Exemplo de gráfico gerado a partir dos resultados da simulação.
 </p>
 
 ---
