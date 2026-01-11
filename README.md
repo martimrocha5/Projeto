@@ -88,14 +88,78 @@ A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **Sim
 
 A interface foi concebida de forma a facilitar a interação do utilizador com a simulação e a interpretação dos resultados obtidos.
 
-### 1. Executar simulação
-#### 1.1 Alterar os parâmetros do sistema
-Para alterar os parametros da simulação, desenvolvemos interface clara, onde é possível inserir os dados pretendidos 
+### 1. Configuração da Simulação (Pré-Simulação)
+
+Na fase inicial, o utilizador tem acesso a uma janela de configuração onde pode definir os principais parâmetros da simulação, tais como a taxa de chegada de doentes, o número de médicos disponíveis e a duração média das consultas. Estes parâmetros são fundamentais para caracterizar o comportamento do sistema e influenciam diretamente os resultados obtidos.
 
 <p align="center">
-    <img src="pre_simulacao.png" alt="logo" width="600"/>
+  <!-- INSERIR AQUI IMAGEM DA JANELA DE CONFIGURAÇÃO (PRÉ-SIMULAÇÃO) -->
+  <em>Figura X: Janela de configuração inicial da simulação.</em>
 </p>
 
+Antes de iniciar a simulação, são efetuadas validações automáticas aos dados introduzidos, garantindo que todos os campos obrigatórios se encontram preenchidos e que os valores inseridos são compatíveis com o tipo esperado.
+
+---
+
+### 2. Execução da Simulação
+
+Após a correta configuração dos parâmetros, o utilizador pode dar início à simulação. Durante esta fase, o sistema processa os eventos de chegada e atendimento dos doentes de acordo com os modelos probabilísticos definidos.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGEM DA JANELA DURANTE A SIMULAÇÃO -->
+  <em>Figura X: Janela principal durante a execução da simulação.</em>
+</p>
+
+Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de progresso que indica o estado de execução da simulação, permitindo acompanhar visualmente a sua evolução.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGEM DA BARRA DE PROGRESSO -->
+  <em>Figura X: Barra de progresso apresentada durante a simulação.</em>
+</p>
+
+---
+
+### 3. Tratamento de Erros e Validação de Dados
+
+Com o objetivo de aumentar a robustez da aplicação, foram implementados mecanismos de tratamento de erros. Sempre que o utilizador insere dados inválidos, como campos vazios ou valores não numéricos, o sistema apresenta mensagens de aviso claras, orientando o utilizador para a correção do erro.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGENS DAS MENSAGENS DE ERRO (CAMPOS VAZIOS / TIPOS INVÁLIDOS) -->
+  <em>Figura X: Exemplos de mensagens de erro e validação de dados.</em>
+</p>
+
+---
+
+### 4. Análise de Dados
+
+Após a conclusão da simulação, o utilizador pode aceder à janela de análise de dados, onde são apresentadas estatísticas relevantes sobre os doentes atendidos e o desempenho do sistema. Esta análise inclui, entre outros aspetos, a distribuição etária, a identificação de perfis de risco e informações gerais sobre a população simulada.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGEM DA JANELA DE ANÁLISE DE DADOS -->
+  <em>Figura X: Janela de análise de dados da simulação.</em>
+</p>
+
+---
+
+### 5. Visualização Gráfica dos Resultados
+
+A aplicação disponibiliza ainda um menu dedicado à visualização gráfica dos resultados obtidos. Através deste menu, o utilizador pode selecionar diferentes gráficos que representam métricas importantes, como a evolução da fila de espera, o número de doentes atendidos ou o desempenho por especialidade.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGEM DO MENU DE GRÁFICOS -->
+  <em>Figura X: Menu de seleção de gráficos.</em>
+</p>
+
+Após a seleção, o gráfico correspondente é gerado e apresentado numa nova janela, facilitando a interpretação visual dos resultados da simulação.
+
+<p align="center">
+  <!-- INSERIR AQUI IMAGEM DE UM GRÁFICO GERADO -->
+  <em>Figura X: Exemplo de gráfico gerado a partir dos resultados da simulação.</em>
+</p>
+
+---
+
+Em conjunto, estas funcionalidades tornam a interface gráfica uma componente essencial do sistema, permitindo não só a configuração e execução da simulação, mas também uma análise clara e estruturada dos resultados obtidos.
 
 ## Integração de Dados Reais de Doentes
 
