@@ -354,7 +354,8 @@ def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
     mani.N_MEDICOS = n_medicos
     mani.TAXA_CHEGADA = taxa_chegada
     mani.TEMPO_MEDIO = tempo_medio
-    mani.DISTRIBUICAO = distribuicao ```
+    mani.DISTRIBUICAO = distribuicao 
+```
 
 
 São inicializadas as principais estruturas de dados:
@@ -370,7 +371,8 @@ São inicializadas as principais estruturas de dados:
 
     hist_fila = []
     hist_fila_esp = {esp: [] for esp in especialidades}
-    hist_ocupa = [] ```
+    hist_ocupa = [] 
+  ```
 
 #### 8.2.5 Geração dos Eventos de Chegada
 
@@ -380,42 +382,49 @@ Antes do início do ciclo principal, são gerados todos os eventos de chegada at
 
 A simulação decorre num ciclo while, onde os eventos são processados por ordem temporal.
 
-"while queueEventos:
+```
+while queueEventos:
     tempo_atual, tipo, pessoa, esp = mani.dequeue(queueEventos)
     ocupacao = mani.calcular_ocupacao(medicos)
-    hist_ocupa.append((tempo_atual, ocupacao))"
+    hist_ocupa.append((tempo_atual, ocupacao))
+```
 
 Durante esta fase, se a interface gráfica estiver ativa, é atualizada uma barra de progresso que reflete a percentagem da simulação já concluída.
 
 #### 8.2.7 Tratamento de Eventos de Chegada 
 
-"if tipo == CHEGADA:
+```
+if tipo == CHEGADA:
     medico = mani.procuraMedico(medicos, esp)
     if medico:
         duracao = mani.gera_tempo_consulta()
         mani.enqueue(queueEventos, (tempo_atual + duracao, SAIDA, pessoa, esp))
         ent_consulta_d[pessoa["id"]] = tempo_atual
     else:
-        fila_espera[esp].append((tempo_atual, pessoa))" 
+        fila_espera[esp].append((tempo_atual, pessoa)) 
+``` 
 
 #### 8.2.8 Tratamento de Eventos de Saída
 
-"elif tipo == SAIDA:
+```
+elif tipo == SAIDA:
     mani.libertarMedico(medicos, esp)
     saida_d[pessoa["id"]] = tempo_atual
 
     if fila_espera[esp]:
         tempo_chegada, prox = fila_espera[esp].pop(0)
         duracao = mani.gera_tempo_consulta()
-        mani.enqueue(queueEventos, (tempo_atual + duracao, SAIDA, prox, esp))"
+        mani.enqueue(queueEventos, (tempo_atual + duracao, SAIDA, prox, esp))
+```
 
 #### 8.2.9 Cálculo das Estatísticas Finais
 
 Após o processamento de todos os eventos, são calculadas métricas globais de desempenho, como tempos médios de espera e permanência na clínica.
 
-"
+```
 media_espera = np.mean(list(ent_consulta_d.values())) if ent_consulta_d else 0
-media_clinica = np.mean(list(saida_d.values())) if saida_d else 0"
+media_clinica = np.mean(list(saida_d.values())) if saida_d else 0
+```
 
 Estas métricas são devolvidas juntamente com os históricos temporais, permitindo a geração de gráficos e a exportação dos resultados.
 
