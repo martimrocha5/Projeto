@@ -305,6 +305,125 @@ As funções de **visualização gráfica** encontram-se isoladas num módulo pr
 
 Por fim, o módulo da **interface gráfica** coordena a interação com o utilizador, assegurando a validação de dados, a execução da simulação, a apresentação dos resultados e a exportação dos relatórios.
 
+### 8.2 Funcionamento do Núcleo da Simulação
+#### 8.2.1 Visão Geral da Função simula
+
+O núcleo do sistema encontra-se implementado na função simula, responsável por coordenar todo o processo de simulação do funcionamento da clínica médica. Esta função integra a geração de eventos, a gestão da fila de espera, a atribuição de médicos, a recolha de métricas estatísticas e a interação com a interface gráfica.
+
+A função simula implementa uma simulação de eventos discretos, sendo responsável por controlar o tempo da simulação e o processamento sequencial dos eventos de chegada e saída dos doentes.
+
+#### 8.2.2 Importação de Módulos e Definição de Constantes
+
+O sistema recorre a vários módulos externos para assegurar funcionalidades específicas:
+
+* ```json``` para carregamento do dataset de pessoas;
+* ```numpy``` para cálculo de médias estatísticas;
+* ```manipulacao``` (importado como mani) onde se encontram funções auxiliares de geração de tempos, gestão de médicos e filas
+* ```FreeSimpleGUI``` para a interface gráfica.
+
+São ainda definidas duas constantes simbólicas, CHEGADA e SAIDA, que identificam os tipos de eventos processados na simulação, aumentando a clareza e legibilidade do código.
+
+```
+import json
+import numpy as np
+import manipulacao as mani
+import FreeSimpleGUI as sg
+
+CHEGADA = 0
+SAIDA = 1
+```
+
+
+#### 8.2.3 Carregamento do Dataset e Definição das Especialidades
+
+O ficheiro pessoas.json é carregado no início da execução e armazenado na variável PESSOAS. Este dataset contém informação realista sobre indivíduos, permitindo que cada doente da simulação possua atributos próprios.
+
+```
+with open("pessoas.json", "r", encoding="utf-8") as f:
+    PESSOAS = json.load(f)
+
+especialidades = ["Cardiologia", "Clínica Geral", "Pneumologia"]
+```
+
+#### 8.2.4 Inicialização da Simulação
+
+A função ```simula``` recebe como parâmetros o número de médicos, a taxa de chegada de doentes, o tempo médio de consulta, a duração total da simulação e o tipo de distribuição estatística a utilizar.
+
+```
+def simula(n_medicos, taxa_chegada, tempo_medio, tempo_simulacao, distribuicao):
+    mani.N_MEDICOS = n_medicos
+    mani.TAXA_CHEGADA = taxa_chegada
+    mani.TEMPO_MEDIO = tempo_medio
+    mani.DISTRIBUICAO = distribuicao ```
+
+
+São inicializadas as principais estruturas de dados:
+
+```
+    queueEventos = []
+    fila_espera = {esp: [] for esp in especialidades}
+    medicos = mani.criarMedicos(n_medicos, especialidades)
+
+    chegadas_d = {}
+    ent_consulta_d = {}
+    saida_d = {}
+
+    hist_fila = []
+    hist_fila_esp = {esp: [] for esp in especialidades}
+    hist_ocupa = [] ```
+
+#### 8.2.5 Geração dos Eventos de Chegada
+
+Antes do início do ciclo principal, são gerados todos os eventos de chegada até ao final da simulação. O intervalo entre chegadas é calculado com base numa distribuição probabilística.
+
+#### 8.2.6 Ciclo Principal de Eventos
+
+A simulação decorre num ciclo while, onde os eventos são processados por ordem temporal.
+
+"while queueEventos:
+    tempo_atual, tipo, pessoa, esp = mani.dequeue(queueEventos)
+    ocupacao = mani.calcular_ocupacao(medicos)
+    hist_ocupa.append((tempo_atual, ocupacao))"
+
+Durante esta fase, se a interface gráfica estiver ativa, é atualizada uma barra de progresso que reflete a percentagem da simulação já concluída.
+
+#### 8.2.7 Tratamento de Eventos de Chegada 
+
+"if tipo == CHEGADA:
+    medico = mani.procuraMedico(medicos, esp)
+    if medico:
+        duracao = mani.gera_tempo_consulta()
+        mani.enqueue(queueEventos, (tempo_atual + duracao, SAIDA, pessoa, esp))
+        ent_consulta_d[pessoa["id"]] = tempo_atual
+    else:
+        fila_espera[esp].append((tempo_atual, pessoa))" 
+
+#### 8.2.8 Tratamento de Eventos de Saída
+
+"elif tipo == SAIDA:
+    mani.libertarMedico(medicos, esp)
+    saida_d[pessoa["id"]] = tempo_atual
+
+    if fila_espera[esp]:
+        tempo_chegada, prox = fila_espera[esp].pop(0)
+        duracao = mani.gera_tempo_consulta()
+        mani.enqueue(queueEventos, (tempo_atual + duracao, SAIDA, prox, esp))"
+
+#### 8.2.9 Cálculo das Estatísticas Finais
+
+Após o processamento de todos os eventos, são calculadas métricas globais de desempenho, como tempos médios de espera e permanência na clínica.
+
+"
+media_espera = np.mean(list(ent_consulta_d.values())) if ent_consulta_d else 0
+media_clinica = np.mean(list(saida_d.values())) if saida_d else 0"
+
+Estas métricas são devolvidas juntamente com os históricos temporais, permitindo a geração de gráficos e a exportação dos resultados.
+
+#### 8.2.10 Considerações Finais
+
+A função simula implementa uma simulação de eventos discretos completa, integrando geração probabilística de eventos, gestão de recursos, filas de espera por especialidade e recolha sistemática de dados estatísticos.
+
+A separação entre a lógica da simulação e os módulos auxiliares contribui para um código modular, legível e facilmente extensível.
 
 ## 9. Desafios e Soluções
 
