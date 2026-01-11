@@ -3,17 +3,24 @@
 ## 1. Identificação do Projeto
 
 **Autores:**
+
+
 Bárbara Jacques, (a109722)
 
 Esmeralda Freitas, (a109932)
 
 Martim Rocha, (a112252)
 
+
 **Data:** 29 de dezembro de 2025
 
+
 **Unidade Curricular:** Algoritmos e Técnicas de Programação
+
 **Curso:** Licenciatura em Engenharia Biomédica (2.º ano)
+
 **Instituição:** Universidade do Minho – Escola de Engenharia
+
 **Projeto laboratorial coordenado por:** José Carlos Ramalho, Luís Filipe Cunha
 
 ---
