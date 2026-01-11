@@ -61,12 +61,12 @@ Estes parâmetros podem ser alterados de modo a testar diferentes cenários e an
 
 A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **SimpleGUI**, permitindo executar a simulação, alterar parâmetros e visualizar gráficos.
 
-### 1. Configuração da Simulação (Pré-Simulação)
+### 1. Configuração da Simulação
 
 Na fase inicial, o utilizador tem acesso a uma janela de configuração onde pode definir os principais parâmetros da simulação. Estes parâmetros são fundamentais para caracterizar o comportamento do sistema e influenciam diretamente os resultados obtidos.
 
 <p align="center">
-  <img src="pos_simulacao.jpg" alt="Interface Principal" width="600"/>
+  <img src="imagens/pos_simulacao.jpg" alt="Interface Principal" width="600"/>
   <br>
   <em>Figura 1: Janela de configuração inicial da simulação e parâmetros.</em>
 </p>
@@ -80,7 +80,7 @@ Antes de iniciar a simulação, são efetuadas validações automáticas aos dad
 Para fornecer feedback contínuo ao utilizador durante a execução, é apresentada uma barra de progresso que indica o estado do processamento.
 
 <p align="center">
-    <img src="barra_progresso.jpg" alt="Barra de Progresso" width="600"/>
+    <img src="imagens/barra_progresso.jpg" alt="Barra de Progresso" width="600"/>
     <br>
     <em>Figura 2: Barra de progresso durante a execução.</em>
 </p>
@@ -92,8 +92,8 @@ Para fornecer feedback contínuo ao utilizador durante a execução, é apresent
 Com o objetivo de aumentar a robustez da aplicação, foram implementados mecanismos de tratamento de erros. Sempre que o utilizador insere dados inválidos (como texto num campo numérico ou campos vazios), o sistema apresenta mensagens de aviso.
 
 <p align="center">
-    <img src="erro_vazio.png" alt="Erro Vazio" width="300"/>
-    <img src="erro_inteiro.png" alt="Erro Inteiro" width="300"/>
+    <img src="imagens/erro_vazio.png" alt="Erro Vazio" width="300"/>
+    <img src="imagens/erro_inteiro.png" alt="Erro Inteiro" width="300"/>
     <br>
     <em>Figura 3: Exemplos de validação de dados (campos vazios e tipos de dados).</em>
 </p>
@@ -105,7 +105,7 @@ Com o objetivo de aumentar a robustez da aplicação, foram implementados mecani
 Após a conclusão da simulação, o utilizador pode aceder à janela de análise de dados, onde são apresentadas estatísticas relevantes sobre os doentes atendidos, incluindo distribuição etária e perfis de risco.
 
 <p align="center">
-  <img src="analise_dados.png" alt="Análise de Dados" width="500"/>
+  <img src="imagens/analise_dados.png" alt="Análise de Dados" width="500"/>
   <br>
   <em>Figura 4: Janela de análise de dados da simulação.</em>
 </p>
@@ -117,7 +117,7 @@ Após a conclusão da simulação, o utilizador pode aceder à janela de anális
 A aplicação disponibiliza um menu dedicado à visualização gráfica dos resultados obtidos.
 
 <p align="center">
-  <img src="menu_graficos.png" alt="Menu de Gráficos" width="300"/>
+  <img src="imagens/menu_graficos.png" alt="Menu de Gráficos" width="300"/>
   <br>
   <em>Figura 5: Menu de seleção de gráficos.</em>
 </p>
@@ -125,7 +125,7 @@ A aplicação disponibiliza um menu dedicado à visualização gráfica dos resu
 Após a seleção, o gráfico correspondente é gerado, facilitando a interpretação visual dos resultados, como a evolução da fila de espera.
 
 <p align="center">
-  <img src="evol_fila.png" alt="Evolução da Fila" width="600"/>
+  <img src="imagens/evol_fila.png" alt="Evolução da Fila" width="600"/>
   <br>
   <em>Figura 6: Gráfico da evolução do tamanho da fila de espera ao longo do tempo.</em>
 </p>
@@ -137,8 +137,8 @@ Após a seleção, o gráfico correspondente é gerado, facilitando a interpreta
 O sistema permite ainda guardar os relatórios gerados em diferentes formatos.
 
 <p align="center">
-  <img src="guardar_tj.png" alt="Menu Guardar" width="300"/>
-  <img src="guard_sucesso.png" alt="Sucesso" width="300"/>
+  <img src="imagens/guardar_tj.png" alt="Menu Guardar" width="300"/>
+  <img src="imagens/guard_sucesso.png" alt="Sucesso" width="300"/>
   <br>
   <em>Figura 7: Funcionalidade de exportação de dados.</em>
 </p>
