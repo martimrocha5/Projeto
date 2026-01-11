@@ -91,8 +91,8 @@ A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **Sim
 
 A interface foi concebida de forma a facilitar a interação do utilizador com a simulação e a interpretação dos resultados obtidos.
 
-## Interface 
-### 1. Configuração da Simulação (Pré-Simulação)
+## 5. Interface 
+### 5.1 Configuração da Simulação (Pré-Simulação)
 
 Na fase inicial, o utilizador tem acesso a uma janela de configuração onde pode definir os principais parâmetros da simulação, tais como a taxa de chegada de doentes, o número de médicos disponíveis e a duração média das consultas. Estes parâmetros são fundamentais para caracterizar o comportamento do sistema e influenciam diretamente os resultados obtidos.
 
@@ -107,7 +107,7 @@ Antes de iniciar a simulação, são efetuadas validações automáticas aos dad
 
 ---
 
-### 2. Execução da Simulação
+### 5.2 Execução da Simulação
 
 Após a correta configuração dos parâmetros, o utilizador pode dar início à simulação. Durante esta fase, o sistema processa os eventos de chegada e atendimento dos doentes de acordo com os modelos probabilísticos definidos.
 
@@ -122,7 +122,7 @@ Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de prog
 
 ---
 
-### 3. Tratamento de Erros e Validação de Dados
+### 5.3 Tratamento de Erros e Validação de Dados
 
 Com o objetivo de aumentar a robustez da aplicação, foram implementados mecanismos de tratamento de erros. Sempre que o utilizador insere dados inválidos, como campos vazios ou valores não numéricos, o sistema apresenta mensagens de aviso claras, orientando o utilizador para a correção do erro.
 
@@ -136,7 +136,7 @@ Com o objetivo de aumentar a robustez da aplicação, foram implementados mecani
 
 ---
 
-### 4. Análise de Dados
+### 5.4 Análise de Dados
 
 Após a conclusão da simulação, o utilizador pode aceder à janela de análise de dados, onde são apresentadas estatísticas relevantes sobre os doentes atendidos e o desempenho do sistema. Esta análise inclui, entre outros aspetos, a distribuição etária, a identificação de perfis de risco e informações gerais sobre a população simulada.
 
@@ -149,7 +149,7 @@ Após a conclusão da simulação, o utilizador pode aceder à janela de anális
 
 ---
 
-### 5. Visualização Gráfica dos Resultados
+### 5.5 Visualização Gráfica dos Resultados
 
 A aplicação disponibiliza ainda um menu dedicado à visualização gráfica dos resultados obtidos. Através deste menu, o utilizador pode selecionar diferentes gráficos que representam métricas importantes, como a evolução da fila de espera, o número de doentes atendidos ou o desempenho por especialidade.
 
@@ -173,11 +173,11 @@ Após a seleção, o gráfico correspondente é gerado e apresentado numa nova j
 
 Em conjunto, estas funcionalidades tornam a interface gráfica uma componente essencial do sistema, permitindo não só a configuração e execução da simulação, mas também uma análise clara e estruturada dos resultados obtidos.
 
-## Integração de Dados Reais de Doentes
+## 6. Integração de Dados Reais de Doentes
 
 Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
 
-### 1.Exemplo de Estrutura do Dataset JSON
+### 6.1 Exemplo de Estrutura do Dataset JSON
 
 O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento representa um possível doente da clínica. Cada registo inclui informação como nome, idade, morada, hábitos de saúde e outros atributos relevantes. Um excerto simplificado do dataset é apresentado de seguida:
 
@@ -201,7 +201,7 @@ O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento repre
 }
 ```
 
-### 2. Carregamento e Validação dos Dados
+### 6.2  Carregamento e Validação dos Dados
 
 O carregamento do dataset é realizado através de uma função dedicada, responsável por ler o ficheiro JSON e devolver a lista de pessoas a utilizar na simulação:
 
@@ -215,7 +215,7 @@ def carregar_e_validar(caminho):
     return dados
 ```
 
-### 3. Cálculo de Estatísticas Demográficas
+### 6.3 Cálculo de Estatísticas Demográficas
 
 A partir da lista de pessoas carregada, são calculadas várias estatísticas que permitem caracterizar a população atendida pela clínica. Por exemplo, o cálculo da idade média, mínima e máxima é realizado da seguinte forma:
 
@@ -265,7 +265,7 @@ Estas métricas permitem enriquecer a análise da simulação, possibilitando es
 
 Além disso, os resultados estatísticos obtidos podem ser representados graficamente e **exportados para ficheiros JSON e TXT**, assegurando persistência dos dados, reprodutibilidade das experiências e facilidade de análise posterior.
 
-## Tecnologias Utilizadas
+## 7. Tecnologias Utilizadas
 
 Para o desenvolvimento do sistema, foi necessária a importação de bibliotecas e módulos, de modo a conseguir realizar o programa da forma mais eficiente possível. As bibliotecas e os módulos em questão são:
 
@@ -275,13 +275,13 @@ Para o desenvolvimento do sistema, foi necessária a importação de bibliotecas
 * **Matplotlib** – criação de gráficos e visualizações;
 * **JSON** – armazenamento e configuração de parâmetros (opcional).
 
-## Metodologia de Simulação
+## 8. Metodologia de Simulação
 
 O sistema utiliza uma abordagem de **simulação de eventos discretos**, mantendo uma lista ordenada de eventos futuros. Cada evento corresponde a uma chegada ou saída de um doente. O estado do sistema é atualizado à medida que os eventos são processados, permitindo calcular métricas de desempenho em tempo real.
 
 Os médicos são modelados como recursos que podem estar ocupados ou livres, e a fila de espera é representada por uma estrutura de dados do tipo queue.
 
-## Desafios e Soluções
+## 9. Desafios e Soluções
 
 Durante o desenvolvimento do projeto foram identificados vários desafios, nomeadamente:
 
@@ -294,7 +294,7 @@ Estes desafios foram ultrapassados através de uma estruturação cuidada do có
 
 ---
 
-## Conclusão
+## 10. Conclusão
 
 O desenvolvimento deste projeto permitiu consolidar os conhecimentos adquiridos na Unidade Curricular de **Algoritmos e Técnicas de Programação**, nomeadamente no que diz respeito à programação em Python, manipulação de dados e desenvolvimento de interfaces.
 
