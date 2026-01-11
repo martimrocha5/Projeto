@@ -151,12 +151,21 @@ Após a conclusão da simulação, o utilizador pode aceder à janela de anális
 
 ### 5.5 Visualização Gráfica dos Resultados
 
-A aplicação disponibiliza ainda um menu dedicado à visualização gráfica dos resultados obtidos. Através deste menu, o utilizador pode selecionar diferentes gráficos que representam métricas importantes, como a evolução da fila de espera, o número de doentes atendidos ou o desempenho por especialidade.
+A aplicação disponibiliza ainda um menu dedicado à visualização gráfica dos resultados obtidos. 
+
+<p align="center">
+  <img src="imagens/pos_simulacao.png" alt="Menu graficos." width="500"/>
+  <br>
+  <em>Figura 5: Botão menu gráficos.</em>
+</p>
+
+
+Através deste menu, o utilizador pode selecionar diferentes gráficos que representam métricas importantes, como a evolução da fila de espera, o número de doentes atendidos ou o desempenho por especialidade.
 
 <p align="center">
   <img src="imagens/menu_graficos.png" alt="Menu de seleção de gráficos" width="300"/>
   <br>
-  <em>Figura 5: Menu de seleção de gráficos estatísticos.</em>
+  <em>Figura 5.1: Menu de seleção de gráficos estatísticos.</em>
 </p>
 
 
