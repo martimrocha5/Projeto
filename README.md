@@ -88,6 +88,10 @@ A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **Sim
 
 A interface foi concebida de forma a facilitar a interação do utilizador com a simulação e a interpretação dos resultados obtidos.
 
+### 1. Executar simulação
+#### 1.1 Alterar os parâmetros do sistema
+Para alterar os parametros da simulação, desenvolvemos interface clara, onde é possível inserir os dados pretendidos 
+
 ## Integração de Dados Reais de Doentes
 
 Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
