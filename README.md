@@ -106,15 +106,13 @@ Antes de iniciar a simulação, são efetuadas validações automáticas aos dad
 Após a correta configuração dos parâmetros, o utilizador pode dar início à simulação. Durante esta fase, o sistema processa os eventos de chegada e atendimento dos doentes de acordo com os modelos probabilísticos definidos.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DA JANELA DURANTE A SIMULAÇÃO -->
-  <em>Figura X: Janela principal durante a execução da simulação.</em>
+    <img src="pre_simulacao.png" alt="logo" width="300"/>
 </p>
 
 Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de progresso que indica o estado de execução da simulação, permitindo acompanhar visualmente a sua evolução.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DA BARRA DE PROGRESSO -->
-  <em>Figura X: Barra de progresso apresentada durante a simulação.</em>
+    <img src="barra_progresso.png" alt="logo" width="300"/>
 </p>
 
 ---
@@ -124,8 +122,7 @@ Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de prog
 Com o objetivo de aumentar a robustez da aplicação, foram implementados mecanismos de tratamento de erros. Sempre que o utilizador insere dados inválidos, como campos vazios ou valores não numéricos, o sistema apresenta mensagens de aviso claras, orientando o utilizador para a correção do erro.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGENS DAS MENSAGENS DE ERRO (CAMPOS VAZIOS / TIPOS INVÁLIDOS) -->
-  <em>Figura X: Exemplos de mensagens de erro e validação de dados.</em>
+    <img src="erro_vazio.png" alt="logo" width="300"/>
 </p>
 
 ---
