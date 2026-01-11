@@ -181,7 +181,7 @@ Em conjunto, estas funcionalidades tornam a interface gráfica uma componente es
 
 Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
 
-### Exemplo de Estrutura do Dataset JSON
+### 1.Exemplo de Estrutura do Dataset JSON
 
 O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento representa um possível doente da clínica. Cada registo inclui informação como nome, idade, morada, hábitos de saúde e outros atributos relevantes. Um excerto simplificado do dataset é apresentado de seguida:
 
@@ -205,7 +205,7 @@ O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento repre
 }
 ```
 
-### Carregamento e Validação dos Dados
+### 2. Carregamento e Validação dos Dados
 
 O carregamento do dataset é realizado através de uma função dedicada, responsável por ler o ficheiro JSON e devolver a lista de pessoas a utilizar na simulação:
 
@@ -219,7 +219,7 @@ def carregar_e_validar(caminho):
     return dados
 ```
 
-### Cálculo de Estatísticas Demográficas
+### 3. Cálculo de Estatísticas Demográficas
 
 A partir da lista de pessoas carregada, são calculadas várias estatísticas que permitem caracterizar a população atendida pela clínica. Por exemplo, o cálculo da idade média, mínima e máxima é realizado da seguinte forma:
 
