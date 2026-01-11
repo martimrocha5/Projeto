@@ -281,6 +281,22 @@ O sistema utiliza uma abordagem de **simulação de eventos discretos**, mantend
 
 Os médicos são modelados como recursos que podem estar ocupados ou livres, e a fila de espera é representada por uma estrutura de dados do tipo queue.
 
+A utilização de especialidades médicas e a atribuição automática dos doentes com base em características como a idade e hábitos de saúde permitiu tornar a simulação mais realista. Esta abordagem aproxima o comportamento do sistema a um cenário clínico real, onde diferentes perfis de doentes recorrem a especialidades distintas, influenciando diretamente a dinâmica da fila de espera e a ocupação dos médicos.
+
+
+### 8.1 Estrutura do Código e Modularização
+
+O código desenvolvido foi organizado de forma modular, de modo a facilitar a leitura, manutenção e extensão do sistema. Cada conjunto de funções desempenha uma responsabilidade específica, promovendo a separação de preocupações.
+
+O módulo de **análise de dados** é responsável pelo carregamento e validação do dataset de pessoas, bem como pelo cálculo de estatísticas demográficas, como distribuição etária, hábitos de saúde, localização geográfica e profissões mais frequentes.
+
+O módulo de **simulação** implementa o núcleo da simulação de eventos discretos, incluindo a gestão da fila de eventos, o estado dos médicos, a atribuição de especialidades e o processamento das chegadas e saídas de doentes.
+
+As funções de **visualização gráfica** encontram-se isoladas num módulo próprio, permitindo gerar gráficos independentes da lógica da simulação, como a evolução do tamanho da fila e a taxa de ocupação dos médicos.
+
+Por fim, o módulo da **interface gráfica** coordena a interação com o utilizador, assegurando a validação de dados, a execução da simulação, a apresentação dos resultados e a exportação dos relatórios.
+
+
 ## 9. Desafios e Soluções
 
 Durante o desenvolvimento do projeto foram identificados vários desafios, nomeadamente:
