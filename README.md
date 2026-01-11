@@ -282,7 +282,7 @@ Para o desenvolvimento do sistema, foi necessária a importação de bibliotecas
 * **SimpleGUI** – desenvolvimento da interface gráfica;
 * **NumPy** – geração de variáveis aleatórias e apoio ao cálculo estatístico;
 * **Matplotlib** – criação de gráficos e visualizações;
-* **JSON** – armazenamento e configuração de parâmetros (opcional).
+* **JSON** – armazenamento e configuração de parâmetros.
 
 ## 8. Metodologia de Simulação
 
