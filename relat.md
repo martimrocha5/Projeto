@@ -170,7 +170,7 @@ Após a seleção, o gráfico correspondente é gerado e apresentado numa nova j
     <img src="imagens/evol_fila.png" alt="Erro campo vazio" width="300"/>
     <img src="imagens/taxa_ocupacao.png" alt="Erro tipo de dados" width="300"/>
     <br>
-    <em>Figura 6: Exemplo de gráfico gerado a partir dos resultados da simulação.
+    <em>Figura 6: Exemplos de gráficos gerados a partir dos resultados da simulação.
 </p>
 
 ---
