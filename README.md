@@ -1,34 +1,34 @@
 # Relatório do Projeto: Simulação de uma Clínica Médica
 
-## Autores
+## 1. Identificação do Projeto
 
-Bárbara Jacques, a109722
+**Autores:**
 
-Esmeralda Freitas, a109932
 
-Martim Rocha, a112252
+Bárbara Jacques, (a109722)  
+Esmeralda Freitas, (a109932)  
+Martim Rocha, (a112252) 
 
-## Data
+**Data:** 29 de dezembro de 2025
 
-29 de dezembro de 2025
-
-## Enquadramento Institucional
-
-**Instituição:** Universidade do Minho – Escola de Engenharia
-
-**Curso:** Licenciatura em Engenharia Biomédica (2.º ano)
 
 **Unidade Curricular:** Algoritmos e Técnicas de Programação
 
-**Projeto laboratorial idealizado e coordenado por:** José Carlos Ramalho e Luís Filipe Cunha
+**Curso:** Licenciatura em Engenharia Biomédica (2.º ano)
 
-## Visão Geral do Projeto
+**Instituição:** Universidade do Minho – Escola de Engenharia
+
+**Projeto laboratorial coordenado por:** José Carlos Ramalho, Luís Filipe Cunha
+
+---
+
+## 2. Introdução
 
 No âmbito da unidade curricular de Algoritmos e Técnicas de Programação, foi proposto o desenvolvimento de uma aplicação em Python destinada à **simulação do funcionamento de uma clínica médica**. O objetivo principal do projeto consiste em modelar, de forma realista, o atendimento de doentes numa clínica, recorrendo a processos probabilísticos e a uma simulação de eventos discretos.
 
 A aplicação permite analisar o impacto de diferentes parâmetros, tais como a taxa de chegada de doentes, o número de médicos disponíveis e o tempo médio de consulta, no desempenho global do sistema.
 
-## Objetivos do Sistema
+## 3. Objetivos do Sistema
 
 Os principais objetivos do sistema desenvolvido são:
 
@@ -38,7 +38,9 @@ Os principais objetivos do sistema desenvolvido são:
 * Gerar gráficos que representem a evolução desses indicadores ao longo do tempo;
 * Permitir a variação dos parâmetros da simulação e a análise do impacto dessas alterações nos resultados.
 
-## Descrição do Funcionamento do Sistema
+---
+
+## 4. Descrição Geral do Funcionamento
 
 O funcionamento básico da simulação segue o seguinte fluxo:
 
@@ -50,7 +52,7 @@ O funcionamento básico da simulação segue o seguinte fluxo:
 
 Todo o sistema é baseado numa **simulação de eventos discretos**, onde os principais eventos são a chegada e a saída de doentes.
 
-## Parâmetros de Configuração
+### 4.1 Parâmetros de Configuração
 
 A aplicação permite configurar diversos parâmetros relevantes para a simulação, entre os quais:
 
@@ -62,7 +64,7 @@ A aplicação permite configurar diversos parâmetros relevantes para a simulaç
 
 Estes parâmetros podem ser alterados de modo a testar diferentes cenários e analisar o comportamento do sistema.
 
-## Resultados Produzidos
+### 4.2 Resultados Produzidos
 
 Durante a execução da simulação, são recolhidos diversos indicadores de desempenho, nomeadamente:
 
@@ -73,7 +75,7 @@ Durante a execução da simulação, são recolhidos diversos indicadores de des
 * Percentagem de ocupação dos médicos;
 * Número total de doentes atendidos.
 
-## Gráficos Gerados
+### 4.3 Gráficos Gerados
 
 Com base nos dados recolhidos, a aplicação gera vários gráficos, entre os quais:
 
@@ -82,7 +84,7 @@ Com base nos dados recolhidos, a aplicação gera vários gráficos, entre os qu
 * Relação entre a taxa de chegada de doentes e o tamanho médio da fila de espera;
 * Outros gráficos adicionais considerados relevantes para a análise do sistema.
 
-## Interface Gráfica
+### 4.4 Interface Gráfica
 
 A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **SimpleGUI**, permitindo:
 
@@ -93,6 +95,7 @@ A aplicação dispõe de uma interface gráfica desenvolvida com o módulo **Sim
 
 A interface foi concebida de forma a facilitar a interação do utilizador com a simulação e a interpretação dos resultados obtidos.
 
+## Interface 
 ### 1. Configuração da Simulação (Pré-Simulação)
 
 Na fase inicial, o utilizador tem acesso a uma janela de configuração onde pode definir os principais parâmetros da simulação, tais como a taxa de chegada de doentes, o número de médicos disponíveis e a duração média das consultas. Estes parâmetros são fundamentais para caracterizar o comportamento do sistema e influenciam diretamente os resultados obtidos.
@@ -164,8 +167,10 @@ A aplicação disponibiliza ainda um menu dedicado à visualização gráfica do
 Após a seleção, o gráfico correspondente é gerado e apresentado numa nova janela, facilitando a interpretação visual dos resultados da simulação.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DE UM GRÁFICO GERADO -->
-  <em>Figura 6: Exemplo de gráfico gerado a partir dos resultados da simulação.</em>
+    <img src="imagens/evol_fila.png" alt="Erro campo vazio" width="300"/>
+    <img src="imagens/taxa_ocupacao.png" alt="Erro tipo de dados" width="300"/>
+    <br>
+    <em>Figura 6: Exemplos de gráficos gerados a partir dos resultados da simulação.</em>
 </p>
 
 ---
@@ -176,7 +181,7 @@ Em conjunto, estas funcionalidades tornam a interface gráfica uma componente es
 
 Para tornar a simulação mais realista e alinhada com um contexto clínico real, foi integrada a utilização de um **dataset de pessoas em formato JSON**, fornecido no âmbito do projeto. Em vez de trabalhar apenas com identificadores abstratos de doentes, o sistema passa a lidar com pessoas reais, caracterizadas por atributos demográficos e comportamentais.
 
-### Exemplo de Estrutura do Dataset JSON
+### 1.Exemplo de Estrutura do Dataset JSON
 
 O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento representa um possível doente da clínica. Cada registo inclui informação como nome, idade, morada, hábitos de saúde e outros atributos relevantes. Um excerto simplificado do dataset é apresentado de seguida:
 
@@ -200,7 +205,7 @@ O ficheiro JSON utilizado contém uma lista de pessoas, onde cada elemento repre
 }
 ```
 
-### Carregamento e Validação dos Dados
+### 2. Carregamento e Validação dos Dados
 
 O carregamento do dataset é realizado através de uma função dedicada, responsável por ler o ficheiro JSON e devolver a lista de pessoas a utilizar na simulação:
 
@@ -214,7 +219,7 @@ def carregar_e_validar(caminho):
     return dados
 ```
 
-### Cálculo de Estatísticas Demográficas
+### 3. Cálculo de Estatísticas Demográficas
 
 A partir da lista de pessoas carregada, são calculadas várias estatísticas que permitem caracterizar a população atendida pela clínica. Por exemplo, o cálculo da idade média, mínima e máxima é realizado da seguinte forma:
 
@@ -280,12 +285,25 @@ Os médicos são modelados como recursos que podem estar ocupados ou livres, e a
 
 ## Desafios e Soluções
 
-Um dos principais desafios encontrados foi a correta modelação do comportamento estocástico do sistema, garantindo que as distribuições estatísticas utilizadas representassem adequadamente o funcionamento real de uma clínica médica. Outro desafio relevante foi a gestão eficiente dos eventos e a recolha consistente das métricas ao longo da simulação.
+Durante o desenvolvimento do projeto foram identificados vários desafios, nomeadamente:
 
-Estes desafios foram ultrapassados através de uma estruturação cuidada do código, testes com diferentes cenários e análise dos resultados obtidos.
+* A correta modelação do comportamento estocástico do sistema;
+* A gestão eficiente da fila de espera;
+* A recolha consistente de métricas ao longo da simulação;
+* A integração de dados reais com a lógica da simulação.
+
+Estes desafios foram ultrapassados através de uma estruturação cuidada do código, desenvolvimento de funções modulares e realização de testes com diferentes cenários.
+
+---
 
 ## Conclusão
 
-O desenvolvimento deste projeto permitiu aplicar conceitos fundamentais de programação, estatística e modelação de sistemas reais. Através da simulação da dinâmica de uma clínica médica, foi possível compreender o impacto de diferentes parâmetros no desempenho do sistema e desenvolver uma aplicação funcional, extensível e alinhada com os objetivos da unidade curricular.
+O desenvolvimento deste projeto permitiu consolidar os conhecimentos adquiridos na Unidade Curricular de **Algoritmos e Técnicas de Programação**, nomeadamente no que diz respeito à programação em Python, manipulação de dados e desenvolvimento de interfaces.
 
-Considera-se que os objetivos propostos foram alcançados com sucesso, tendo o projeto contribuído significativamente para o desenvolvimento de competências técnicas e analíticas essenciais na área da Engenharia Biomédica.
+A simulação de uma clínica médica revelou-se uma aplicação prática e relevante, possibilitando a análise do impacto de diferentes parâmetros no desempenho do sistema. Conclui-se que os objetivos propostos foram atingidos, resultando numa aplicação funcional, extensível e alinhada com os requisitos definidos para o projeto.
+
+
+
+
+
+

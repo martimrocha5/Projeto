@@ -285,13 +285,24 @@ Os médicos são modelados como recursos que podem estar ocupados ou livres, e a
 
 ## Desafios e Soluções
 
-Um dos principais desafios encontrados foi a correta modelação do comportamento estocástico do sistema, garantindo que as distribuições estatísticas utilizadas representassem adequadamente o funcionamento real de uma clínica médica. Outro desafio relevante foi a gestão eficiente dos eventos e a recolha consistente das métricas ao longo da simulação.
+Durante o desenvolvimento do projeto foram identificados vários desafios, nomeadamente:
 
-Estes desafios foram ultrapassados através de uma estruturação cuidada do código, testes com diferentes cenários e análise dos resultados obtidos.
+* A correta modelação do comportamento estocástico do sistema;
+* A gestão eficiente da fila de espera;
+* A recolha consistente de métricas ao longo da simulação;
+* A integração de dados reais com a lógica da simulação.
+
+Estes desafios foram ultrapassados através de uma estruturação cuidada do código, desenvolvimento de funções modulares e realização de testes com diferentes cenários.
+
+---
 
 ## Conclusão
 
-O desenvolvimento deste projeto permitiu aplicar conceitos fundamentais de programação, estatística e modelação de sistemas reais. Através da simulação da dinâmica de uma clínica médica, foi possível compreender o impacto de diferentes parâmetros no desempenho do sistema e desenvolver uma aplicação funcional, extensível e alinhada com os objetivos da unidade curricular.
+O desenvolvimento deste projeto permitiu consolidar os conhecimentos adquiridos na Unidade Curricular de **Algoritmos e Técnicas de Programação**, nomeadamente no que diz respeito à programação em Python, manipulação de dados e desenvolvimento de interfaces.
+
+A simulação de uma clínica médica revelou-se uma aplicação prática e relevante, possibilitando a análise do impacto de diferentes parâmetros no desempenho do sistema. Conclui-se que os objetivos propostos foram atingidos, resultando numa aplicação funcional, extensível e alinhada com os requisitos definidos para o projeto.
+
+
 
 
 
