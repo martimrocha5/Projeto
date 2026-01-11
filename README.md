@@ -93,9 +93,11 @@ A interface foi concebida de forma a facilitar a interação do utilizador com a
 Na fase inicial, o utilizador tem acesso a uma janela de configuração onde pode definir os principais parâmetros da simulação, tais como a taxa de chegada de doentes, o número de médicos disponíveis e a duração média das consultas. Estes parâmetros são fundamentais para caracterizar o comportamento do sistema e influenciam diretamente os resultados obtidos.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DA JANELA DE CONFIGURAÇÃO (PRÉ-SIMULAÇÃO) -->
-  <em>Figura X: Janela de configuração inicial da simulação.</em>
+  <img src="imagens/pre_simulacao.png" alt="Janela de configuração da simulação" width="600"/>
+  <br>
+  <em>Figura 1: Janela de configuração inicial da simulação.</em>
 </p>
+
 
 Antes de iniciar a simulação, são efetuadas validações automáticas aos dados introduzidos, garantindo que todos os campos obrigatórios se encontram preenchidos e que os valores inseridos são compatíveis com o tipo esperado.
 
@@ -106,14 +108,13 @@ Antes de iniciar a simulação, são efetuadas validações automáticas aos dad
 Após a correta configuração dos parâmetros, o utilizador pode dar início à simulação. Durante esta fase, o sistema processa os eventos de chegada e atendimento dos doentes de acordo com os modelos probabilísticos definidos.
 
 <p align="center">
-    <img src="pre_simulacao.png" alt="logo" width="300"/>
+  <img src="imagens/barra_progresso.png" alt="Barra de progresso da simulação" width="600"/>
+  <br>
+  <em>Figura 2: Barra de progresso durante a execução da simulação.</em>
 </p>
+
 
 Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de progresso que indica o estado de execução da simulação, permitindo acompanhar visualmente a sua evolução.
-
-<p align="center">
-    <img src="barra_progresso.png" alt="logo" width="300"/>
-</p>
 
 ---
 
@@ -122,8 +123,12 @@ Para fornecer feedback contínuo ao utilizador, é apresentada uma barra de prog
 Com o objetivo de aumentar a robustez da aplicação, foram implementados mecanismos de tratamento de erros. Sempre que o utilizador insere dados inválidos, como campos vazios ou valores não numéricos, o sistema apresenta mensagens de aviso claras, orientando o utilizador para a correção do erro.
 
 <p align="center">
-    <img src="erro_vazio.png" alt="logo" width="300"/>
+  <img src="imagens/erro_vazio.png" alt="Erro campo vazio" width="300"/>
+  <img src="imagens/erro_inteiro.png" alt="Erro tipo de dados" width="300"/>
+  <br>
+  <em>Figura 3: Exemplos de mensagens de erro apresentadas ao utilizador.</em>
 </p>
+
 
 ---
 
@@ -132,9 +137,11 @@ Com o objetivo de aumentar a robustez da aplicação, foram implementados mecani
 Após a conclusão da simulação, o utilizador pode aceder à janela de análise de dados, onde são apresentadas estatísticas relevantes sobre os doentes atendidos e o desempenho do sistema. Esta análise inclui, entre outros aspetos, a distribuição etária, a identificação de perfis de risco e informações gerais sobre a população simulada.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DA JANELA DE ANÁLISE DE DADOS -->
-  <em>Figura X: Janela de análise de dados da simulação.</em>
+  <img src="imagens/analise_dados.png" alt="Janela de análise de dados" width="500"/>
+  <br>
+  <em>Figura 4: Janela de análise de dados demográficos da simulação.</em>
 </p>
+
 
 ---
 
@@ -143,15 +150,17 @@ Após a conclusão da simulação, o utilizador pode aceder à janela de anális
 A aplicação disponibiliza ainda um menu dedicado à visualização gráfica dos resultados obtidos. Através deste menu, o utilizador pode selecionar diferentes gráficos que representam métricas importantes, como a evolução da fila de espera, o número de doentes atendidos ou o desempenho por especialidade.
 
 <p align="center">
-  <!-- INSERIR AQUI IMAGEM DO MENU DE GRÁFICOS -->
-  <em>Figura X: Menu de seleção de gráficos.</em>
+  <img src="imagens/menu_graficos.png" alt="Menu de seleção de gráficos" width="300"/>
+  <br>
+  <em>Figura 5: Menu de seleção de gráficos estatísticos.</em>
 </p>
+
 
 Após a seleção, o gráfico correspondente é gerado e apresentado numa nova janela, facilitando a interpretação visual dos resultados da simulação.
 
 <p align="center">
   <!-- INSERIR AQUI IMAGEM DE UM GRÁFICO GERADO -->
-  <em>Figura X: Exemplo de gráfico gerado a partir dos resultados da simulação.</em>
+  <em>Figura 6: Exemplo de gráfico gerado a partir dos resultados da simulação.</em>
 </p>
 
 ---
