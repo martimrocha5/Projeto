@@ -5,12 +5,9 @@
 **Autores:**
 
 
-Bárbara Jacques, (a109722)
-
-Esmeralda Freitas, (a109932)
-
-Martim Rocha, (a112252)
-
+Bárbara Jacques, (a109722)  
+Esmeralda Freitas, (a109932)  
+Martim Rocha, (a112252) 
 
 **Data:** 29 de dezembro de 2025
 
