@@ -271,6 +271,8 @@ Além disso, os resultados estatísticos obtidos podem ser representados grafica
 
 ## Tecnologias Utilizadas
 
+Para o desenvolvimento do sistema, foi necessária a importação de bibliotecas e módulos, de modo a conseguir realizar o programa da forma mais eficiente possível. As bibliotecas e os módulos em questão são:
+
 * **Python** – linguagem de programação principal;
 * **SimpleGUI** – desenvolvimento da interface gráfica;
 * **NumPy** – geração de variáveis aleatórias e apoio ao cálculo estatístico;
