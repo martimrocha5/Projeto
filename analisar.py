@@ -33,7 +33,7 @@ def estatisticas_idades(lista):
 
 
 def distribuicao_distritos(lista):
-    """Frequência de distritos."""
+    """Frequência de distritos (Ordenado Alfabeticamente)."""
     res = {}
 
     for p in lista:
@@ -42,8 +42,9 @@ def distribuicao_distritos(lista):
             res[d] += 1
         else:
             res[d] = 1
-
-    return res
+    
+    # Ordena o dicionário pelas chaves (nome do distrito)
+    return dict(sorted(res.items()))
 
 
 def distribuicao_fumadores(lista):
@@ -56,11 +57,12 @@ def distribuicao_fumadores(lista):
         else:
             res["Não Fumador"] += 1
 
-    return res
+    # Ordena alfabeticamente (Fumador vem antes de Não Fumador, ou vice-versa dependendo da string)
+    return dict(sorted(res.items()))
 
 
 def distribuicao_desportos(lista):
-    """Frequência de desportos."""
+    """Frequência de desportos (Ordenado Alfabeticamente)."""
     res = {}
 
     for p in lista:
@@ -70,11 +72,12 @@ def distribuicao_desportos(lista):
             else:
                 res[d] = 1
 
-    return res
+    # Ordena o dicionário pelas chaves (nome do desporto)
+    return dict(sorted(res.items()))
 
 
 def top_profissoes(lista, n=10):
-    """Top profissões mais frequentes."""
+    """Top profissões mais frequentes (Ordenado por Quantidade)."""
     res = {}
 
     for p in lista:
@@ -84,11 +87,13 @@ def top_profissoes(lista, n=10):
         else:
             res[prof] = 1
 
+    # Aqui mantemos a ordem por valor (quantidade), pois é um "TOP"
     return sorted(res.items(), key=lambda x: x[1], reverse=True)[:n]
 
 
 def distribuir_faixas_etarias(lista):
     """Distribuição por faixas etárias."""
+    # Estas chaves já estão numa ordem lógica, não precisamos de ordenar alfabeticamente
     res = {"0-17": 0, "18-30": 0, "31-50": 0, "51-70": 0, "71+": 0}
 
     for p in lista:
