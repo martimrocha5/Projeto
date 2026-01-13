@@ -198,8 +198,8 @@ def criar_interface():
             abrir_janela_analise()
 
         elif event == "-SIMULAR-":
-            n_medicos = validar_int(values["-MEDICOS-"], "Médicos", minimo=1, maximo=20)
-            taxa = validar_float(values["-TAXA-"], "Taxa (doentes/h)", minimo=0.1, maximo=100)
+            n_medicos = validar_int(values["-MEDICOS-"], "Médicos", minimo=1, maximo=100)
+            taxa = validar_float(values["-TAXA-"], "Taxa (doentes/h)", minimo=0.1, maximo=150)
             tempo = validar_float(values["-TEMPO-"], "Tempo Consulta (min)", minimo=1, maximo=120)
             duracao = validar_float(values["-DURACAO-"], "Duração (min)", minimo=10, maximo=1440)
 

@@ -1,0 +1,199 @@
+RELATÓRIO COMPLETO DE ANÁLISE DE DADOS
+============================================================
+Data: 13/01/2026 14:06:04
+
+IDADES
+------------------------------------------------------------
+Média: 59.6
+Mínimo: 18 | Máximo: 100
+Faixas Etárias:
+  - 0-17: 0
+  - 18-30: 303
+  - 31-50: 480
+  - 51-70: 475
+  - 71+: 742
+
+FUMADORES
+------------------------------------------------------------
+  - Fumador: 964
+  - Não Fumador: 1036
+
+DESPORTOS
+------------------------------------------------------------
+  - Aggressive Inline: 80
+  - Aikido: 82
+  - Air hockey: 59
+  - Andebol: 74
+  - Andebol Americano: 65
+  - Andebol de Praia: 86
+  - Andebol de campo: 92
+  - Arremesso do peso: 101
+  - Arte marcial: 80
+  - Atletismo: 74
+  - BMX: 78
+  - Badminton: 87
+  - Balonismo: 83
+  - Bare-foot: 88
+  - Basquetebol: 79
+  - Beisebol: 79
+  - Biatlo: 86
+  - Bobsleigh: 75
+  - Bodyboard: 88
+  - Boxe: 86
+  - Broomball: 75
+  - Cabo de Guerra: 79
+  - Canoagem: 81
+  - Capoeira: 73
+  - Caça Submarina: 84
+  - Ciclismo: 87
+  - Columbofilia: 73
+  - Corfebol: 65
+  - Cornerbol: 84
+  - Corrida de Aventura: 81
+  - Corrida de fundo: 83
+  - Corrida de meio-fundo: 83
+  - Corrida de velocidade: 72
+  - Críquete: 84
+  - Escalada: 86
+  - Esgrima: 75
+  - Esqui: 150
+  - Esqui Aquático: 72
+  - Faustebol: 66
+  - Flag football: 63
+  - Floorball: 75
+  - Full Contact: 62
+  - Futebol: 75
+  - Futebol Americano: 80
+  - Futebol Australiano: 91
+  - Futebol Canadense: 63
+  - Futebol Gaélico: 73
+  - Futebol de Arena: 81
+  - Futebol de Cinco: 85
+  - Futebol de Praia: 76
+  - Futebol de salão-FIFUSA: 70
+  - Futevolei: 89
+  - Futsal: 76
+  - Galinjitsu: 73
+  - Golfe: 82
+  - Haidong Gumdo: 57
+  - Halterofilismo: 63
+  - Hapkido: 72
+  - Hipismo: 79
+  - Hurling: 67
+  - Hóquei de pavilhão: 81
+  - Hóquei em campo: 92
+  - Hóquei em linha: 91
+  - Hóquei em patins: 64
+  - Hóquei no gelo: 72
+  - Hóquei subaquático: 80
+  - I-Chuan: 84
+  - Jiu-Jitsu: 72
+  - Judo: 69
+  - Kabaddi: 90
+  - Karaté: 76
+  - Kempo: 58
+  - Kendo: 69
+  - Kitesurf: 65
+  - Kung-Fu: 79
+  - Lacrosse: 78
+  - Lançamento do dardo: 55
+  - Lançamento do disco: 82
+  - Lançamento do martelo: 74
+  - Malha: 90
+  - Manbol: 73
+  - Marcha Atlética: 60
+  - Marcha Nórdica: 75
+  - Mergulho: 76
+  - Minigolfe: 71
+  - Motonáutica: 78
+  - Mountain Bike: 89
+  - Muay Thai: 76
+  - Natação: 93
+  - Netball: 67
+  - Ninjutsu: 76
+  - Orientação: 71
+  - Paddle: 80
+  - Paintball: 77
+  - Parapente: 71
+  - Patinagem: 69
+  - Pelota Basca: 95
+  - Pentatlo Aeronáutico: 82
+  - Pentatlo Militar: 66
+  - Pentatlo Moderno: 75
+  - Pentatlo Naval: 79
+  - Pesapallo: 62
+  - Pesca: 59
+  - Peteca: 100
+  - Polo: 67
+  - Pólo aquático: 67
+  - Rapel: 50
+  - Raquetebol: 57
+  - Ringette: 73
+  - Rugby de praia: 78
+  - Rugby subaquático: 80
+  - Râguebi: 73
+  - Salto com vara: 71
+  - Salto em altura: 67
+  - Salto em comprimento: 71
+  - Shotokai: 85
+  - Showbol: 78
+  - Skate: 69
+  - Snow Papelão: 84
+  - Snowboard: 70
+  - Softbol: 165
+  - Squash: 80
+  - Street Soccer: 71
+  - Surf: 72
+  - Taekwondo: 79
+  - Tai Chi Chuan: 85
+  - Tchouckball: 69
+  - Tiro: 81
+  - Tiro com arco: 90
+  - Trekking: 72
+  - Triatlo: 79
+  - Triplo salto: 72
+  - Ténis: 168
+  - Ténis de Mesa: 77
+  - Ultimate: 74
+  - Ultimate de praia: 84
+  - Voleibol: 83
+  - Voleibol de praia: 74
+  - Windsurf: 75
+  - Wrestling: 81
+  - Wushu: 74
+  - Xadrez: 76
+
+DISTRITOS
+------------------------------------------------------------
+  - Aveiro: 124
+  - Beja: 111
+  - Braga: 109
+  - Bragança: 90
+  - Castelo Branco: 72
+  - Coimbra: 119
+  - Faro: 114
+  - Guarda: 93
+  - Leiria: 118
+  - Lisboa: 160
+  - Portalegre: 99
+  - Porto: 186
+  - Santarém: 120
+  - Setúbal: 83
+  - Viana do Castelo: 69
+  - Vila Real: 78
+  - Viseu: 163
+  - Évora: 92
+
+PROFISSÕES (TOP)
+------------------------------------------------------------
+  - Coreógrafo: 9
+  - Parteira: 8
+  - Avicultor e trabalhador qualificado da avicultura: 8
+  - Riscador de moldes e cortador de tecidos: 8
+  - Classificador arquivista: 7
+  - Designer de têxteis e moda: 7
+  - Director dos serviços de cuidados de crianças: 7
+  - Medicina legal: 6
+  - Operador de central telefónica: 6
+  - Geofísico: 6
+============================================================
